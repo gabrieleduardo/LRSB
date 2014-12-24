@@ -21,7 +21,7 @@ public class Config implements Serializable{
      * ou diretórios completos.
      */
     
-    public boolean fullPackage;
+    public boolean fullDirectory;
 
     /**
      * Valor de pausa inicial do intervalo
@@ -39,7 +39,7 @@ public class Config implements Serializable{
     public String defaultPath;
     
     private Config() {
-        fullPackage = false;
+        fullDirectory = false;
         defaultPath = getSlash()+"Spreadsheets"; //Adicionar o diretório padrão.
         defaultPauseBegin = 2400;
         defaultPauseEnd = 2400;

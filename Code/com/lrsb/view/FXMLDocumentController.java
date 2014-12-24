@@ -5,31 +5,57 @@
  */
 package com.lrsb.view;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 /**
  *
  * @author gabriel
  */
 public class FXMLDocumentController implements Initializable {
+
+    @FXML
+    private TextField resourcePathTF;
+    @FXML
+    private TextField targetPathTF;
+
+    @FXML
+    private TextField pauseBegin;
+
+    @FXML
+    private TextField pauseEnd;
     
     @FXML
-    private Label label;
-    
+    private ToggleButton fullDirectory;
+
     @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
+    private void resourcePathSearch(ActionEvent event) {
+        DirectoryChooser dc = new DirectoryChooser();
+        dc.setTitle("Resource Directory");
+        File file = dc.showDialog(new Stage());
+        resourcePathTF.setText(file.toString());
+    }
+
+    @FXML
+    private void targetPathSearch(ActionEvent event) {
+        DirectoryChooser dc = new DirectoryChooser();
+        dc.setTitle("Target Directory");
+        File file = dc.showDialog(new Stage());
+        targetPathTF.setText(file.toString());
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
 }

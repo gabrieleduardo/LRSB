@@ -24,21 +24,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        String st = "C:"+StringTreatment.getSlash()+"XML"+StringTreatment.getSlash()+"portugues.xml";
-        try {
-            XmlDocument xd = XmlReader.parseDocument(st);
-            System.out.println(xd.getSubject());
-        } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        /*
+        stage.setResizable(false);
+        stage.setTitle("Linear Representation Spreadsheet Builder");
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
         stage.show();
-        */
+        
     }
 
     /**
