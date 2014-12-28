@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class ConfigPersistence {
 
-    private static final String path = "/Config/cfg";
+    private static final String path = "cfg";
 
     /**
      * Salva a configuração como um objeto serializavel.

@@ -26,12 +26,12 @@ public class Config implements Serializable{
     /**
      * Valor de pausa inicial do intervalo
      */
-    public Integer defaultPauseBegin;
+    public String defaultPauseBegin;
 
     /**
      * Valor de pausa final do intervalo
      */
-    public Integer defaultPauseEnd;
+    public String defaultPauseEnd;
 
     /**
      * Caminho padrão para os documentos gerados
@@ -41,8 +41,36 @@ public class Config implements Serializable{
     private Config() {
         fullDirectory = false;
         defaultPath = getSlash()+"Spreadsheets"; //Adicionar o diretório padrão.
-        defaultPauseBegin = 2400;
-        defaultPauseEnd = 2400;
+        defaultPauseBegin = "2400";
+        defaultPauseEnd = "0";
+    }
+    
+    public void resetConfig(){
+        saveConfig(false, getSlash()+"Spreadsheets","2400","0");
+    }
+    
+    public void saveConfig(Boolean fullDirectory,String defaultPath,String defaultPauseBegin,String defaultPauseEnd){
+        this.fullDirectory = fullDirectory;
+        this.defaultPath = defaultPath;
+        this.defaultPauseBegin = defaultPauseBegin;
+        this.defaultPauseEnd = defaultPauseEnd;
+        boolean save = ConfigPersistence.save(this);
+    }
+
+    public boolean isFullDirectory() {
+        return fullDirectory;
+    }
+
+    public String getDefaultPauseBegin() {
+        return defaultPauseBegin;
+    }
+
+    public String getDefaultPauseEnd() {
+        return defaultPauseEnd;
+    }
+
+    public String getDefaultPath() {
+        return defaultPath;
     }
     
     /**
@@ -54,6 +82,15 @@ public class Config implements Serializable{
     }
     
     private static class ConfigHolder {
-        private static final Config INSTANCE = new Config();
+        private static final Config INSTANCE = configInstanceInit();
+        
+        private static Config configInstanceInit(){
+            Config cfg = (Config)ConfigPersistence.load();
+            if(cfg == null){
+                cfg = new Config();
+                ConfigPersistence.save(cfg);
+            }
+            return cfg;
+        }
     }
 }

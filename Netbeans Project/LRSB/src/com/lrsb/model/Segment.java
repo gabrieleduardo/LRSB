@@ -14,6 +14,7 @@ public class Segment {
     private Integer microUnitId;
     private Integer linearRep;
     private Integer pause;
+    private Integer pauseType;
     private Integer start;
     private Integer end;
     private Integer durationM;
@@ -520,5 +521,13 @@ public class Segment {
      */
     public void setDel(Integer del) {
         this.del = del;
+    }
+
+    public Integer getPauseType() {
+        return pauseType;
+    }
+
+    public void setPauseType(Integer pauseType) {
+        this.pauseType = pauseType;
     }
 }

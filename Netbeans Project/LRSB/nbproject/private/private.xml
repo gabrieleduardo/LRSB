@@ -3,9 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/gabriel/Documents/GitHub/LRSB/Netbeans%20Project/LRSB/src/com/lrsb/view/Main.java</file>
-            <file>file:/C:/Users/gabriel/Documents/GitHub/LRSB/Netbeans%20Project/LRSB/src/com/lrsb/view/FXMLDocumentController.java</file>
-            <file>file:/C:/Users/gabriel/Documents/GitHub/LRSB/Netbeans%20Project/LRSB/src/com/lrsb/config/Config.java</file>
+            <file>file:/C:/Users/gabriel/Documents/GitHub/LRSB/Netbeans%20Project/LRSB/src/com/lrsb/view/MainScreenController.java</file>
+            <file>file:/C:/Users/gabriel/Documents/GitHub/LRSB/Netbeans%20Project/LRSB/src/com/lrsb/view/MenuScreenController.java</file>
+            <file>file:/C:/Users/gabriel/Documents/GitHub/LRSB/Netbeans%20Project/LRSB/src/com/lrsb/view/Stages.java</file>
         </group>
     </open-files>
 </project-private>
