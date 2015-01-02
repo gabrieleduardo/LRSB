@@ -9,48 +9,26 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="640.0" type="VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lrsb.view.MainScreenController">
-  <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="preferences" mnemonicParsing="false" onAction="#openMenu" text="Preferences" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Tutorial" />
-                  <MenuItem mnemonicParsing="false" text="Documentation" />
-                  <MenuItem mnemonicParsing="false" text="About" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <AnchorPane id="mainPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="348.0" prefWidth="624.0">
-      <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="14.0" prefHeight="73.0" prefWidth="624.0" text="Linear Representation Spreadsheet Builder" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Label>
-            <Label layoutX="66.0" layoutY="103.0" prefHeight="17.0" prefWidth="88.0" text="Resource Path:" />
-            <TextField id="resourcePathTF" fx:id="resourcePathTF" editable="false" layoutX="154.0" layoutY="99.0" prefHeight="25.0" prefWidth="327.0" />
-            <TextField id="targetPathTF" fx:id="targetPathTF" editable="false" layoutX="154.0" layoutY="163.0" prefHeight="25.0" prefWidth="327.0" />
-            <Label layoutX="66.0" layoutY="167.0" text="Target Path:" />
-            <Button id="sourcePathBt" fx:id="sourcePathBt" layoutX="494.0" layoutY="99.0" mnemonicParsing="false" onAction="#resourcePathSearch" prefHeight="25.0" prefWidth="88.0" text="Search" />
-            <Button id="targetPathBt" fx:id="targetPathBt" layoutX="494.0" layoutY="163.0" mnemonicParsing="false" onAction="#targetPathSearch" prefHeight="25.0" prefWidth="88.0" text="Search" />
-            <Label layoutX="66.0" layoutY="223.0" text="Pauses  Within:" />
-            <TextField id="pauseBegin" fx:id="pauseBegin" layoutX="154.0" layoutY="219.0" prefHeight="25.0" prefWidth="149.0" />
-            <Label layoutX="313.0" layoutY="223.0" text=" -" />
-            <TextField id="pauseEnd" fx:id="pauseEnd" layoutX="333.0" layoutY="219.0" />
-            <ToggleButton fx:id="fullDirectory" layoutX="154.0" layoutY="267.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="327.0" text="Process full package in one file" />
-            <Button id="start" fx:id="start" layoutX="154.0" layoutY="323.0" mnemonicParsing="false" onAction="#startProcess" prefHeight="25.0" prefWidth="149.0" text="Start" />
-            <Button id="reset" fx:id="reset" layoutX="333.0" layoutY="323.0" mnemonicParsing="false" onAction="#reset" prefHeight="25.0" prefWidth="149.0" text="Reset" />
-      </children>
-    </AnchorPane>
-  </children>
-</fx:root>
+<AnchorPane id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lrsb.view.MainScreenController">
+<children>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-4.0" layoutY="-9.0" prefHeight="82.0" prefWidth="799.0" text="Linear Representation Spreadsheet Builder" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="117.0" layoutY="84.0" prefHeight="17.0" prefWidth="112.0" text="Resource Path:" />
+      <TextField id="resourcePathTF" fx:id="resourcePathTF" editable="false" layoutX="229.0" layoutY="80.0" prefHeight="25.0" prefWidth="327.0" />
+      <TextField id="targetPathTF" fx:id="targetPathTF" editable="false" layoutX="229.0" layoutY="144.0" prefHeight="25.0" prefWidth="327.0" />
+      <Label layoutX="117.0" layoutY="148.0" prefHeight="17.0" prefWidth="112.0" text="Target Path:" />
+      <Button id="sourcePathBt" fx:id="sourcePathBt" layoutX="569.0" layoutY="80.0" mnemonicParsing="false" onAction="#resourcePathSearch" prefHeight="25.0" prefWidth="88.0" text="Search" />
+      <Button id="targetPathBt" fx:id="targetPathBt" layoutX="569.0" layoutY="144.0" mnemonicParsing="false" onAction="#targetPathSearch" prefHeight="25.0" prefWidth="88.0" text="Search" />
+      <Label layoutX="117.0" layoutY="204.0" prefHeight="17.0" prefWidth="112.0" text="Pauses  Within:" />
+      <TextField id="pauseBegin" fx:id="pauseBegin" layoutX="229.0" layoutY="200.0" prefHeight="25.0" prefWidth="149.0" />
+      <Label layoutX="388.0" layoutY="204.0" text=" -" />
+      <TextField id="pauseEnd" fx:id="pauseEnd" layoutX="408.0" layoutY="200.0" />
+      <ToggleButton fx:id="fullDirectory" layoutX="232.0" layoutY="282.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="327.0" text="Render full package process into one single file" />
+      <Button id="start" fx:id="start" layoutX="232.0" layoutY="338.0" mnemonicParsing="false" onAction="#startProcess" prefHeight="25.0" prefWidth="149.0" text="Start" />
+      <Button id="reset" fx:id="reset" layoutX="411.0" layoutY="338.0" mnemonicParsing="false" onAction="#reset" prefHeight="25.0" prefWidth="149.0" text="Reset" />
+      <Label alignment="CENTER" layoutX="3.0" layoutY="254.0" prefHeight="17.0" prefWidth="766.0" text="Use value * in the second interval field if interested in any pauses greater than that in the first field" />
+</children>
+</AnchorPane>

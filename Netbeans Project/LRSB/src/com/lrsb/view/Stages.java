@@ -8,15 +8,14 @@ package com.lrsb.view;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import javax.swing.event.HyperlinkEvent;
 
 /**
  *
@@ -24,67 +23,95 @@ import javax.swing.event.HyperlinkEvent;
  */
 public class Stages {
 
-    private final Stage menuStage;
-    private final Stage mainStage;
-    private VBox mainScreen;
+    private final String tutorial = "http://gabrieleduardo.github.io/MicroUnits";
+    
+    private final Stage stage;
+    private final Stage browserStage;
+    private Scene mainScene;
+    private Scene menuScene;
+    private Scene tutorialScene;
+    private BorderPane primaryScreen;
+    private BorderPane primaryScreen2;
+    private MenuBar menuBar;
+    private MenuBar menuBar2;
+    private AnchorPane mainScreen;
     private AnchorPane menuScreen;
 
     private Stages() {
-        this.mainStage = new Stage();
-        this.menuStage = new Stage();
-        initMainStage();
-        initMenuStage();
+        this.stage = new Stage();
+        this.browserStage = new Stage();
+        initAll();
     }
 
-    private void initMainStage() {
+    private void initAll() {
         try {
-            this.mainStage.setResizable(false);
-            this.mainStage.setTitle("Linear Representation Spreadsheet Builder");
+            // Inicia as telas
+            this.stage.setResizable(false);
+            this.stage.setTitle("Linear Representation Spreadsheet Builder");
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("PrimaryScreen.fxml"));
+            primaryScreen = (BorderPane) loader.load();
+            loader = new FXMLLoader(Main.class.getResource("PrimaryScreen.fxml"));
+            primaryScreen2 = (BorderPane) loader.load();
 
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("MainScreen.fxml"));
-            mainScreen = (VBox) loader.load();
-            Scene scene = new Scene(mainScreen);
-            mainStage.setScene(scene);
-        } catch (IOException ex) {
-            Logger.getLogger(Stages.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void initMenuStage() {
-        try {
-            this.menuStage.setResizable(false);
-            this.menuStage.setTitle("Linear Representation Spreadsheet Builder");
-
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("MenuScreen.fxml"));
+            // Inicia a barra de menu
+            loader = new FXMLLoader(Main.class.getResource("MenuBar.fxml"));
+            menuBar = (MenuBar) loader.load();
+            loader = new FXMLLoader(Main.class.getResource("MenuBar.fxml"));
+            menuBar2 = (MenuBar) loader.load();
+            // Inicia a tela principal
+            loader = new FXMLLoader(Main.class.getResource("MainScreen.fxml"));
+            mainScreen = (AnchorPane) loader.load();
+            // Inicia a tela de menu
+            loader = new FXMLLoader(Main.class.getResource("MenuScreen.fxml"));
             menuScreen = (AnchorPane) loader.load();
-            Scene scene = new Scene(menuScreen);
-            menuStage.setScene(scene);
+
+            // Configura a tela principal
+            primaryScreen.setTop(menuBar);
+            primaryScreen.setCenter(mainScreen);
+            mainScene = new Scene(primaryScreen);
+            mainScene.setRoot(primaryScreen);
+            // Configura a tela de menu
+            primaryScreen2.setTop(menuBar2);
+            primaryScreen2.setCenter(menuScreen);
+            menuScene = new Scene(primaryScreen2);
+            menuScene.setRoot(primaryScreen2);
+
+            // Inicia o Browser
+            
+            WebView browser = new WebView();
+            WebEngine webEngine = browser.getEngine();
+            webEngine.load(tutorial);
+            tutorialScene = new Scene(browser);
+
+            showMain();
         } catch (IOException ex) {
             Logger.getLogger(Stages.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void showMainStage(){
-        this.mainStage.show();
-    }
     
-    public void showMenuStage(){
-        this.menuStage.show();
+    public void showTutorialStage(){
+        browserStage.setScene(tutorialScene);
+        this.browserStage.show();
     }
-    
-    public void hideMainStage(){
-        this.mainStage.hide();
+
+    public void showStage() {
+        this.stage.show();
     }
-    
-    public void hideMenuStage(){
-        this.menuStage.hide();
+
+    public void showMain() {
+        stage.setScene(mainScene);
+    }
+
+    public void showMenu() {
+        stage.setScene(menuScene);
     }
 
     public static Stages getInstance() {
-        return StagesHolder.INSTANCE;
+        return Stages2Holder.INSTANCE;
     }
 
-    private static class StagesHolder {
+    private static class Stages2Holder {
 
         private static final Stages INSTANCE = new Stages();
     }

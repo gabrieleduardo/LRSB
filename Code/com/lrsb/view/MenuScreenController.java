@@ -15,8 +15,8 @@ import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
@@ -36,7 +36,7 @@ public class MenuScreenController implements Initializable {
     private TextField defaultPauseEnd;
 
     @FXML
-    private CheckBox fullDirectory;
+    private ToggleButton fullDirectory;
 
     @FXML
     private Button searchBt;
@@ -61,7 +61,7 @@ public class MenuScreenController implements Initializable {
     @FXML
     private void cancelButtonEvent(ActionEvent event) {
         this.setValues();
-        Stages.getInstance().hideMenuStage();
+        Stages.getInstance().showMain();
     }
 
     @FXML
@@ -69,14 +69,14 @@ public class MenuScreenController implements Initializable {
         Config.getInstance().saveConfig(this.fullDirectory.isSelected(),defaultDirectoryPath.getText(),
                 defaultPauseBegin.getText(), defaultPauseEnd.getText());
         this.setValues();
-        Stages.getInstance().hideMenuStage();
+        Stages.getInstance().showMain();
     }
 
     @FXML
     private void resetButtonEvent(ActionEvent event) {
         Config.getInstance().resetConfig();
         this.setValues();
-        Stages.getInstance().hideMenuStage();
+        Stages.getInstance().showMain();
     }
 
     @FXML

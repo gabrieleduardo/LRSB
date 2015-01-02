@@ -32,26 +32,6 @@ public class StringTreatment {
     }
 
     /**
-     * Retorna a barra adequada para o sistema operacional. 
-     * 
-     * Sua utilização é necessária para processar corretamente os caminho do
-     * Windows. O mesmo utiliza o backslash (Barra para trás) para separar seus 
-     * diretórios sendo que a mesma barra é utiliza como caractere de escape em
-     * váriaslinguagens de programação. Por sua vez, o Linux e o MacOS utilizam
-     * a fowardslash (barra para frente) para separação de seus diretórios.
-     *
-     * @return A barra adequada para o sistema operacional utilizado.
-     */
-    public static String getSlash() {
-        //Microsoft Windows
-        if (System.getProperty("os.name").startsWith("Windows")) {
-            return "\\";
-        }
-        //Linux and MacOs
-        return "/";
-    }
-
-    /**
      * Retorna o nome do arquivo XML através de seu caminho.
      * 
      * @param path - Caminho do documento

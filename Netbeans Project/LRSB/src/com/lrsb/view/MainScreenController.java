@@ -13,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.stage.DirectoryChooser;
@@ -40,9 +39,6 @@ public class MainScreenController implements Initializable {
     private ToggleButton fullDirectory;
     
     @FXML
-    private MenuItem preferences;
-    
-    @FXML
     private Button start;
     
     @FXML
@@ -65,17 +61,13 @@ public class MainScreenController implements Initializable {
     }
     
     @FXML
-    private void openMenu(){
-        Stages.getInstance().showMenuStage();
-    }
-    
-    @FXML
     public void setValues(){
         Config cfg = Config.getInstance();
         this.fullDirectory.setSelected(cfg.isFullDirectory());
         this.pauseBegin.setText(cfg.getDefaultPauseBegin());
         this.pauseEnd.setText(cfg.getDefaultPauseEnd());
         this.targetPathTF.setText(cfg.defaultPath);
+        this.resourcePathTF.setText("");
     }
     
     @FXML

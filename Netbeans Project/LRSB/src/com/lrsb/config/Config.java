@@ -5,7 +5,7 @@
  */
 package com.lrsb.config;
 
-import static com.lrsb.model.StringTreatment.getSlash;
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -38,16 +38,26 @@ public class Config implements Serializable{
      */
     public String defaultPath;
     
+    public String userDir = System.getProperty("user.home")+File.separator+"LRSB"+File.separator+"Spreadsheets";
+    
     private Config() {
         fullDirectory = false;
-        defaultPath = getSlash()+"Spreadsheets"; //Adicionar o diretório padrão.
+        defaultPath = userDir; //Adicionar o diretório padrão.
         defaultPauseBegin = "2400";
-        defaultPauseEnd = "0";
+        defaultPauseEnd = "*";
+        makeDir();
     }
     
     public void resetConfig(){
-        saveConfig(false, getSlash()+"Spreadsheets","2400","0");
+        makeDir();
+        saveConfig(false,userDir,"2400","*");
     }
+    
+    public void makeDir(){
+        new File(userDir).mkdirs();
+    }
+    
+    
     
     public void saveConfig(Boolean fullDirectory,String defaultPath,String defaultPauseBegin,String defaultPauseEnd){
         this.fullDirectory = fullDirectory;
