@@ -10,7 +10,7 @@ package com.lrsb.xmlElements;
  * aç~pes de teclado são armazenadas na classe filha Key.
  * @author gabriel
  */
-public class Action {
+public class Action implements XmlEvent{
 
     /**
      * Tempo que a ação foi realizada.
@@ -46,10 +46,12 @@ public class Action {
         this.value = value;
         this.action = action;
     }
+    
     /**
      * Método get da variável time
      * @return the time
      */
+    @Override
     public Integer getTime() {
         return time;
     }

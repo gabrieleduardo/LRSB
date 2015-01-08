@@ -17,7 +17,7 @@ public class Document {
     private String st;
     private String stLanguage;
     private String ttLanguage;
-    private ArrayList<Segment> segments;
+    private ArrayList<Segment> segments = new ArrayList<>();
 
     /**
      * @return the subject

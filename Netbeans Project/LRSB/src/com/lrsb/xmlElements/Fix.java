@@ -9,7 +9,7 @@ package com.lrsb.xmlElements;
  * Classe responsável por armazenar as fixações.
  * @author gabriel
  */
-public class Fix {
+public class Fix implements XmlEvent{
 
     /**
      * Tempo da fixação
@@ -55,6 +55,7 @@ public class Fix {
      * Método get da variável time
      * @return the time
      */
+    @Override
     public Integer getTime() {
         return time;
     }

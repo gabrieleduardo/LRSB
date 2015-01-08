@@ -12,7 +12,7 @@ package com.lrsb.model;
 public class Segment {
 
     private Integer microUnitId;
-    private Integer linearRep;
+    private String linearRep;
     private Integer pause;
     private Integer pauseType;
     private Integer start;
@@ -21,11 +21,13 @@ public class Segment {
     private Integer durationT;
     private Integer fixCountS;
     private Integer fixDurationS;
+    private Double meanDurationS;
     private Integer fixCountT;
     private Integer fixDurationT;
     private Double meanDurationT;
     private Integer fixCountST;
     private Integer fixDurationST;
+    private Double meanDurationST;
     private Integer fixCountSPause;
     private Integer fixDurationSPause;
     private Double meanDurationSPause;
@@ -42,10 +44,19 @@ public class Segment {
     private Integer saccadeSum;
     private Integer saccadeMean;
     private Integer saccadePause;
+    private Integer saccadeAnglePause;
     private Integer saccadeSumPause;
     private Double saccadeMeanPause;
     private Integer ins;
     private Integer del;
+
+    public Integer getSaccadeAnglePause() {
+        return saccadeAnglePause;
+    }
+
+    public void setSaccadeAnglePause(Integer saccadeAnglePause) {
+        this.saccadeAnglePause = saccadeAnglePause;
+    }
 
     /**
      * @return the microUnitId
@@ -64,14 +75,14 @@ public class Segment {
     /**
      * @return the linearRep
      */
-    public Integer getLinearRep() {
+    public String getLinearRep() {
         return linearRep;
     }
 
     /**
      * @param linearRep the linearRep to set
      */
-    public void setLinearRep(Integer linearRep) {
+    public void setLinearRep(String linearRep) {
         this.linearRep = linearRep;
     }
 
@@ -529,5 +540,21 @@ public class Segment {
 
     public void setPauseType(Integer pauseType) {
         this.pauseType = pauseType;
+    }
+
+    public Double getMeanDurationS() {
+        return meanDurationS;
+    }
+
+    public void setMeanDurationS(Double meanDurationS) {
+        this.meanDurationS = meanDurationS;
+    }
+
+    public Double getMeanDurationST() {
+        return meanDurationST;
+    }
+
+    public void setMeanDurationST(Double meanDurationST) {
+        this.meanDurationST = meanDurationST;
     }
 }
