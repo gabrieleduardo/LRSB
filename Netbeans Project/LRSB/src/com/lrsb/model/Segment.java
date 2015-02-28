@@ -39,21 +39,29 @@ public class Segment {
     private Double meanDurationSTPause;
     private Integer visits;
     private Integer visitsPause;
-    private Integer saccade;
-    private Integer sacaddeAngle;
-    private Integer saccadeSum;
-    private Integer saccadeMean;
-    private Integer saccadePause;
+    private String saccade;
+    private String sacaddeAngle;
+    private Double saccadeSum;
+    private Double saccadeMean;
+    private String saccadePause;
     private Integer saccadeAnglePause;
-    private Integer saccadeSumPause;
+    private Double saccadeSumPause;
     private Double saccadeMeanPause;
     private Integer ins;
     private Integer del;
 
+    /**
+     *
+     * @return
+     */
     public Integer getSaccadeAnglePause() {
         return saccadeAnglePause;
     }
 
+    /**
+     *
+     * @param saccadeAnglePause
+     */
     public void setSaccadeAnglePause(Integer saccadeAnglePause) {
         this.saccadeAnglePause = saccadeAnglePause;
     }
@@ -411,84 +419,84 @@ public class Segment {
     /**
      * @return the saccade
      */
-    public Integer getSaccade() {
+    public String getSaccade() {
         return saccade;
     }
 
     /**
      * @param saccade the saccade to set
      */
-    public void setSaccade(Integer saccade) {
+    public void setSaccade(String saccade) {
         this.saccade = saccade;
     }
 
     /**
      * @return the sacaddeAngle
      */
-    public Integer getSacaddeAngle() {
+    public String getSacaddeAngle() {
         return sacaddeAngle;
     }
 
     /**
      * @param sacaddeAngle the sacaddeAngle to set
      */
-    public void setSacaddeAngle(Integer sacaddeAngle) {
+    public void setSacaddeAngle(String sacaddeAngle) {
         this.sacaddeAngle = sacaddeAngle;
     }
 
     /**
      * @return the saccadeSum
      */
-    public Integer getSaccadeSum() {
+    public Double getSaccadeSum() {
         return saccadeSum;
     }
 
     /**
      * @param saccadeSum the saccadeSum to set
      */
-    public void setSaccadeSum(Integer saccadeSum) {
+    public void setSaccadeSum(Double saccadeSum) {
         this.saccadeSum = saccadeSum;
     }
 
     /**
      * @return the saccadeMean
      */
-    public Integer getSaccadeMean() {
+    public Double getSaccadeMean() {
         return saccadeMean;
     }
 
     /**
      * @param saccadeMean the saccadeMean to set
      */
-    public void setSaccadeMean(Integer saccadeMean) {
+    public void setSaccadeMean(Double saccadeMean) {
         this.saccadeMean = saccadeMean;
     }
 
     /**
      * @return the saccadePause
      */
-    public Integer getSaccadePause() {
+    public String getSaccadePause() {
         return saccadePause;
     }
 
     /**
      * @param saccadePause the saccadePause to set
      */
-    public void setSaccadePause(Integer saccadePause) {
+    public void setSaccadePause(String saccadePause) {
         this.saccadePause = saccadePause;
     }
 
     /**
      * @return the saccadeSumPause
      */
-    public Integer getSaccadeSumPause() {
+    public Double getSaccadeSumPause() {
         return saccadeSumPause;
     }
 
     /**
      * @param saccadeSumPause the saccadeSumPause to set
      */
-    public void setSaccadeSumPause(Integer saccadeSumPause) {
+    public void setSaccadeSumPause(Double saccadeSumPause) {
         this.saccadeSumPause = saccadeSumPause;
     }
 
@@ -534,27 +542,68 @@ public class Segment {
         this.del = del;
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getPauseType() {
         return pauseType;
     }
 
+    /**
+     *
+     * @param pauseType
+     */
     public void setPauseType(Integer pauseType) {
         this.pauseType = pauseType;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getMeanDurationS() {
         return meanDurationS;
     }
 
+    /**
+     *
+     * @param meanDurationS
+     */
     public void setMeanDurationS(Double meanDurationS) {
         this.meanDurationS = meanDurationS;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getMeanDurationST() {
         return meanDurationST;
     }
 
+    /**
+     *
+     * @param meanDurationST
+     */
     public void setMeanDurationST(Double meanDurationST) {
         this.meanDurationST = meanDurationST;
+    }
+    
+    public String segmentToCSV(){
+        String str;
+        
+        str = microUnitId+","+linearRep+","+pause+","+pauseType+","+start+","+end
+                +","+durationM+","+durationT+","+fixCountS+","+fixDurationS
+                +","+meanDurationS+","+fixCountT+","+fixDurationT+","+meanDurationT
+                +","+fixCountST+","+fixDurationST+","+meanDurationST+","+fixCountSPause
+                +","+fixDurationSPause+","+meanDurationSPause+","+fixCountTPause
+                +","+fixDurationTPause+","+meanDurationTPause+","+fixCountSTPause
+                +","+fixDurationSTPause+","+meanDurationSTPause+","+visits+","+visitsPause
+                +","+saccade+","+sacaddeAngle+","+saccadeSum+","+saccadeMean+
+                ","+saccadePause+","+saccadeAnglePause+","+saccadeSumPause
+                +","+saccadeMeanPause+","+ins+","+del+"\n";
+        
+        return str;
     }
 }

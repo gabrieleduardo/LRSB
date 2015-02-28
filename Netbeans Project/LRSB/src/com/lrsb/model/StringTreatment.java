@@ -12,7 +12,7 @@ package com.lrsb.model;
 public class StringTreatment {
 
     /**
-     * REquisitos Funcionais: RF07
+     * Requisitos Funcionais: RF07
      * 
      * A classe recebe o texto fonte e retorna as duas primeiras palavras 
      * do mesmo, afim de satisfazer o RF07..

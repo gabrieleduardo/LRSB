@@ -16,6 +16,12 @@ import java.util.Comparator;
  */
 public class Processor {
 
+    /**
+     * Processa uma instância XmlDocument e retorna uma instância Document
+     *
+     * @param xDoc XmlDocument
+     * @return
+     */
     public static Document doRender(XmlDocument xDoc) {
         Document doc = new Document();
         doc.setSt(xDoc.getSt());
@@ -37,7 +43,7 @@ public class Processor {
         Integer pauseA = 2400;
         Integer pauseB = Integer.MAX_VALUE;
         // Variaveis
-        Integer dif;
+        Integer dif = Integer.MIN_VALUE;
         Integer microUnitId = 1;
         Integer tf = eList.get(0).getTime();
         Integer ti = tf;
@@ -49,31 +55,89 @@ public class Processor {
         Integer fixDurationT = 0;
         String linearRep = "";
         Segment seg = new Segment();
+        Integer pauseAnt = 0;
+        Integer visits = 0;
+        Integer winAnt = 0;
+        Integer xAnt = null;
+        Integer yAnt = null;
+        Double distancia;
+        String saccade = "";
+        Double saccadeSum = 0.0;
+        Integer saccadeAc = 0;
+        Boolean secondAction = false;
+        Integer pastActionTime = 0;
+        Integer currentActionTime = 0;
+        Integer fixDurationSPause = 0;
+        Integer fixCountSPause = 0;
+        Integer fixDurationTPause = 0;
+        Integer fixCountTPause = 0;
+        Integer visitPauses = 0;
+        String visitSaccadeAngle = "";
 
         for (int i = 0; i < eList.size() - 1; i++) {
             seg.setMicroUnitId(microUnitId);
             seg.setStart(ti);
             XmlEvent e = eList.get(i);
 
-            dif = eList.get(i + 1).getTime() - e.getTime();
+            //Verifica se é uma ação
+            if (e.getClass() == Action.class || e.getClass() == Key.class) {
+                secondAction = true;
+                currentActionTime = e.getTime();
+            }
 
+            // Calcula a diferença entre as ações e atualiza variáveis
+            if (secondAction) {
+                dif = currentActionTime - pastActionTime;
+                pastActionTime = currentActionTime;
+                currentActionTime = 0;
+                secondAction = false;
+            }
+
+            /**
+             * Verifica o tipo de evento e atualiza as variaveis correspondentes
+             */
             if (e.getClass() == Fix.class) {
                 Fix fix = (Fix) e;
-                if(fix.getWin() == 1){
+                if (fix.getWin() == 1) {
                     fixCountS++;
-                }else if(fix.getWin() ==2){
+                    fixCountSPause++;
+                } else if (fix.getWin() == 2) {
                     fixCountT++;
+                    fixCountTPause++;
+                }
+                // Nota: Não considera visitas inválidas.              
+                if (fix.getWin() != winAnt && (fix.getWin() == 1 || fix.getWin() == 2)) {
+                    visits++;
+                    winAnt = fix.getWin();
                 }
             } else if (e.getClass() == TextFix.class) {
                 TextFix textFix = (TextFix) e;
-                if(textFix.getWin() == 1){
+                if (textFix.getWin() == 1) {
                     fixDurationS += textFix.getDur();
                     fixCountS++;
-                }else if(textFix.getWin() ==2){
+                    fixDurationSPause += textFix.getDur();
+                    fixCountSPause++;
+                } else if (textFix.getWin() == 2) {
                     fixDurationT += textFix.getDur();
                     fixCountT++;
+                    fixDurationTPause += textFix.getDur();
+                    fixCountTPause++;
                 }
-                //linearRep = linearRep + textFix.getText();
+
+                //Verifica se houve uma saccade na microunidade
+                if (xAnt != null && yAnt != null) {
+                    distancia = distancia(xAnt, textFix.getX(), yAnt, textFix.getY());
+                    saccadeSum += distancia;
+                    saccadeAc++;
+                    if (saccade.isEmpty()) {
+                        saccade = saccade + distancia;
+                    } else {
+                        saccade = saccade + "+" + distancia;
+                    }
+                }
+
+                xAnt = textFix.getX();
+                yAnt = textFix.getY();
             } else if (e.getClass() == Action.class) {
                 Action action = (Action) e;
                 linearRep = linearRep + action.getValue();
@@ -87,46 +151,97 @@ public class Processor {
 
                 linearRep = linearRep + key.getValue();
             }
-            
+
+            /**
+             * Verifica se o valor está dentro do intervalo de pausas
+             * pré-determinado.
+             */
             if (dif >= pauseA && dif <= pauseB) {
+                //Atualiza o tempo final
+                tf = eList.get(i + 1).getTime() - 1;
+
                 // Adiciona os valores ao segmento
-                seg.setEnd(eList.get(i + 1).getTime()-1);
+                seg.setPause(pauseAnt);
+                seg.setEnd(tf);
                 seg.setDurationM(tf - ti);
-                //seg.setDurationT();
+                seg.setDurationT(0);
                 seg.setLinearRep(linearRep);
                 seg.setFixCountS(fixCountS);
                 seg.setFixCountT(fixCountT);
                 seg.setFixDurationS(fixDurationS);
                 seg.setFixDurationT(fixDurationT);
-                seg.setMeanDurationT(fixDurationT.doubleValue() / fixCountT);
-                seg.setMeanDurationS(fixDurationS.doubleValue() / fixCountS);
+
+                if (fixCountT > 0) {
+                    seg.setMeanDurationT(fixDurationT.doubleValue() / fixCountT);
+                } else {
+                    seg.setMeanDurationT(0.0);
+                }
+
+                if (fixCountS > 0) {
+                    seg.setMeanDurationS(fixDurationS.doubleValue() / fixCountS);
+                } else {
+                    seg.setMeanDurationS(0.0);
+                }
+
                 seg.setFixCountST(fixCountT + fixCountS);
                 seg.setFixDurationST(fixDurationS + fixDurationT);
-                seg.setMeanDurationST(seg.getFixDurationST().doubleValue() / seg.getFixCountST());
-                //seg.setFixCountSPause();
-                //seg.setFixDurationSPause();
-                //seg.setMeanDurationSPause();
-                //seg.setFixCountTPause();
-                //seg.setFixDurationTPause();
-                //seg.setMeanDurationTPause();
-                //seg.setFixDurationSTPause();
-                //seg.setFixCountSTPause();
-                //seg.setMeanDurationSTPause();
-                //seg.setVisits();
+
+                if (fixCountT + fixCountS > 0) {
+                    seg.setMeanDurationST(seg.getFixDurationST().doubleValue() / (fixCountT + fixCountS));
+                } else {
+                    seg.setMeanDurationST(0.0);
+                }
+
+                seg.setFixCountSPause(fixCountSPause);
+                seg.setFixDurationSPause(fixDurationSPause);
+
+                if (fixCountSPause > 0) {
+                    seg.setMeanDurationSPause((double) fixDurationSPause / fixCountSPause);
+                } else {
+                    seg.setMeanDurationSPause(0.0);
+                }
+
+                seg.setFixCountTPause(fixCountTPause);
+                seg.setFixDurationTPause(fixDurationTPause);
+
+                if (fixCountTPause > 0) {
+                    seg.setMeanDurationTPause((double) fixDurationTPause / fixCountTPause);
+                } else {
+                    seg.setMeanDurationTPause(0.0);
+                }
+
+                seg.setFixDurationSTPause(fixDurationSPause + fixDurationTPause);
+                seg.setFixCountSTPause(fixCountSPause + fixCountTPause);
+
+                if (fixDurationSPause + fixDurationTPause > 0) {
+                    seg.setMeanDurationSTPause((double) seg.getFixDurationSTPause() / seg.getFixCountST());
+                } else {
+                    seg.setMeanDurationSTPause(0.0);
+                }
+                seg.setVisits(visits);
                 //seg.setVisitsPause();
-                //seg.setSaccade();
+                seg.setSaccade(saccade);
                 //seg.setSacaddeAngle();
-                //seg.setSaccadeSum();
-                //seg.setSaccadeMean();
+
+                if (saccadeAc > 0) {
+                    seg.setSaccadeMean(saccadeSum / saccadeAc);
+                    seg.setSaccadeSum(saccadeSum);
+                } else {
+                    seg.setSaccadeMean(0.0);
+                    seg.setSaccadeSum(0.0);
+                }
                 //seg.setSaccadePause();
                 //seg.setSaccadeAnglePause();
                 //seg.setSaccadeSumPause();
                 //seg.setSaccadeMeanPause();
                 seg.setIns(ins);
                 seg.setDel(del);
+
                 // Adiciona o segmento ao Documento
                 doc.getSegments().add(seg);
+
                 //Atualiza as Variaveis
+                pauseAnt = dif;
                 tf = eList.get(i + 1).getTime();
                 ti = tf;
                 fixCountS = 0;
@@ -138,10 +253,30 @@ public class Processor {
                 linearRep = "";
                 microUnitId++;
                 seg = new Segment();
+                visits = 0;
+                saccade = "";
+                saccadeSum = 0.0;
+                secondAction = false;
+                fixCountSPause = 0;
+                fixCountTPause = 0;
+                fixDurationSPause = 0;
+                fixDurationTPause = 0;
+            }
+            
+            if (e.getClass() == Action.class || e.getClass() == Key.class) {
+                fixCountSPause = 0;
+                fixCountTPause = 0;
+                fixDurationSPause = 0;
+                fixDurationTPause = 0;
             }
         }
     }
 
+    /**
+     * Ordena os eventos por ordem cronológica
+     *
+     * @param eList Lista de Eventos
+     */
     private static void sortEventList(ArrayList<XmlEvent> eList) {
         Collections.sort(eList, new Comparator<XmlEvent>() {
             @Override
@@ -151,6 +286,9 @@ public class Processor {
         });
     }
 
+    /**
+     * Função auxiliar que reseta os valores das váriaveis passadas.
+     */
     private static void resetValues(Integer ti, Integer tf, Integer fixCountS, Integer fixCountT, Integer ins, Integer del,
             Integer fixDurationS, Integer fixDurationT, String linearRep, Segment seg) {
         ti = tf;
@@ -162,5 +300,12 @@ public class Processor {
         fixDurationT = 0;
         linearRep = "";
         seg = new Segment();
+    }
+
+    /**
+     * Calcula a distância
+     */
+    private static Double distancia(Integer x1, Integer y1, Integer x2, Integer y2) {
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
 }
