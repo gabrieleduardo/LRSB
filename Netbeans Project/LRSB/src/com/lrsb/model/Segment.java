@@ -44,7 +44,7 @@ public class Segment {
     private Double saccadeSum;
     private Double saccadeMean;
     private String saccadePause;
-    private Integer saccadeAnglePause;
+    private String saccadeAnglePause;
     private Double saccadeSumPause;
     private Double saccadeMeanPause;
     private Integer ins;
@@ -54,7 +54,7 @@ public class Segment {
      *
      * @return
      */
-    public Integer getSaccadeAnglePause() {
+    public String getSaccadeAnglePause() {
         return saccadeAnglePause;
     }
 
@@ -62,7 +62,7 @@ public class Segment {
      *
      * @param saccadeAnglePause
      */
-    public void setSaccadeAnglePause(Integer saccadeAnglePause) {
+    public void setSaccadeAnglePause(String saccadeAnglePause) {
         this.saccadeAnglePause = saccadeAnglePause;
     }
 

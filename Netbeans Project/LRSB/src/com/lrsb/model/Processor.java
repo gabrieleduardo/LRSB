@@ -71,8 +71,13 @@ public class Processor {
         Integer fixCountSPause = 0;
         Integer fixDurationTPause = 0;
         Integer fixCountTPause = 0;
-        Integer visitPauses = 0;
-        String visitSaccadeAngle = "";
+        String saccadeAngle = "";
+        String saccadePause = "";
+        String saccadeAnglePause = "";
+        Double saccadeSumPause = 0.0;
+        Double saccadeMeanPause = 0.0;
+        Integer visitsPause = 0;
+        Integer saccadeAcPause = 0;
 
         for (int i = 0; i < eList.size() - 1; i++) {
             seg.setMicroUnitId(microUnitId);
@@ -83,6 +88,17 @@ public class Processor {
             if (e.getClass() == Action.class || e.getClass() == Key.class) {
                 secondAction = true;
                 currentActionTime = e.getTime();
+
+                fixCountSPause = 0;
+                fixCountTPause = 0;
+                fixDurationSPause = 0;
+                fixDurationTPause = 0;
+                saccadePause = "";
+                saccadeAnglePause = "";
+                saccadeSumPause = 0.0;
+                saccadeMeanPause = 0.0;
+                visitsPause = 0;
+                saccadeAcPause = 0;
             }
 
             // Calcula a diferença entre as ações e atualiza variáveis
@@ -108,6 +124,7 @@ public class Processor {
                 // Nota: Não considera visitas inválidas.              
                 if (fix.getWin() != winAnt && (fix.getWin() == 1 || fix.getWin() == 2)) {
                     visits++;
+                    visitsPause++;
                     winAnt = fix.getWin();
                 }
             } else if (e.getClass() == TextFix.class) {
@@ -128,11 +145,32 @@ public class Processor {
                 if (xAnt != null && yAnt != null) {
                     distancia = distancia(xAnt, textFix.getX(), yAnt, textFix.getY());
                     saccadeSum += distancia;
+                    saccadeSumPause += distancia;
                     saccadeAc++;
+                    saccadeAcPause++;
+
                     if (saccade.isEmpty()) {
                         saccade = saccade + distancia;
                     } else {
                         saccade = saccade + "+" + distancia;
+                    }
+                    
+                    if (saccadePause.isEmpty()) {
+                        saccadePause = saccadePause + distancia;
+                    } else {
+                        saccadePause = saccadePause + "+" + distancia;
+                    }
+
+                    if (saccadeAngle.isEmpty()) {
+                        saccadeAngle = saccadeAngle + Vector.getAngle(xAnt, yAnt, textFix.getX(), textFix.getY());
+                    } else {
+                        saccadeAngle = saccadeAngle + "+" + Vector.getAngle(xAnt, yAnt, textFix.getX(), textFix.getY());
+                    }
+                    
+                    if (saccadeAnglePause.isEmpty()) {
+                        saccadeAnglePause = saccadeAnglePause + Vector.getAngle(xAnt, yAnt, textFix.getX(), textFix.getY());
+                    } else {
+                        saccadeAnglePause = saccadeAnglePause + "+" + Vector.getAngle(xAnt, yAnt, textFix.getX(), textFix.getY());
                     }
                 }
 
@@ -219,9 +257,9 @@ public class Processor {
                     seg.setMeanDurationSTPause(0.0);
                 }
                 seg.setVisits(visits);
-                //seg.setVisitsPause();
+                seg.setVisitsPause(visitsPause);
                 seg.setSaccade(saccade);
-                //seg.setSacaddeAngle();
+                seg.setSacaddeAngle(saccadeAngle);
 
                 if (saccadeAc > 0) {
                     seg.setSaccadeMean(saccadeSum / saccadeAc);
@@ -230,10 +268,16 @@ public class Processor {
                     seg.setSaccadeMean(0.0);
                     seg.setSaccadeSum(0.0);
                 }
-                //seg.setSaccadePause();
-                //seg.setSaccadeAnglePause();
-                //seg.setSaccadeSumPause();
-                //seg.setSaccadeMeanPause();
+                seg.setSaccadePause(saccadePause);
+                seg.setSaccadeAnglePause(saccadeAnglePause);
+                seg.setSaccadeSumPause(saccadeSumPause);
+
+                if (saccadeAcPause > 0) {
+                    seg.setSaccadeMeanPause(saccadeSumPause / saccadeAcPause);
+                    seg.setSaccadeSumPause(saccadeSumPause);
+                } else {
+                    seg.setSaccadeMeanPause(0.0);
+                }
                 seg.setIns(ins);
                 seg.setDel(del);
 
@@ -255,19 +299,32 @@ public class Processor {
                 seg = new Segment();
                 visits = 0;
                 saccade = "";
+                saccadeAngle = "";
                 saccadeSum = 0.0;
                 secondAction = false;
                 fixCountSPause = 0;
                 fixCountTPause = 0;
                 fixDurationSPause = 0;
                 fixDurationTPause = 0;
+                saccadePause = "";
+                saccadeAnglePause = "";
+                saccadeSumPause = 0.0;
+                saccadeMeanPause = 0.0;
+                visitsPause = 0;
+                saccadeAcPause = 0;
             }
-            
+
             if (e.getClass() == Action.class || e.getClass() == Key.class) {
                 fixCountSPause = 0;
                 fixCountTPause = 0;
                 fixDurationSPause = 0;
                 fixDurationTPause = 0;
+                saccadePause = "";
+                saccadeAnglePause = "";
+                saccadeSumPause = 0.0;
+                saccadeMeanPause = 0.0;
+                visitsPause = 0;
+                saccadeAcPause = 0;
             }
         }
     }
