@@ -1,14 +1,20 @@
 package com.lrsb.model;
 
+import static com.lrsb.model.StringTreatment.format2f;
+import com.lrsb.spreadsheet.SaveToCSV;
 import com.lrsb.xmlElements.Action;
 import com.lrsb.xmlElements.Fix;
 import com.lrsb.xmlElements.Key;
 import com.lrsb.xmlElements.TextFix;
 import com.lrsb.xmlElements.XmlEvent;
 import com.lrsb.xmlElements.XmlDocument;
+import com.lrsb.xmlElements.XmlReader;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,31 +23,76 @@ import java.util.Comparator;
 public class Processor {
 
     /**
+     *
+     */
+    public static void process(String sourcePath, String targetPath, String pauseBegin, String pauseEnd) {
+        File dir = new File(sourcePath);
+        String[] filename = dir.list();
+
+        if (filename == null) {
+            return;
+        }
+
+        // Dados da configuração
+        Integer pauseA;
+        Integer pauseB;
+
+        if (pauseBegin.matches("^(?!^0)\\d{1,9}$")) {
+            pauseA = Integer.parseInt(pauseBegin);
+            if(pauseA < 0){
+                pauseA = 2400;
+            }
+        } else {
+            pauseA = 2400;
+        }
+
+        if (pauseEnd.matches("^(?!^0)\\d{1,9}$")) {
+            pauseB = Integer.parseInt(pauseEnd);
+            
+            if(pauseB < 0){
+                pauseB = Integer.MAX_VALUE;
+            }
+        } else {
+            pauseB = Integer.MAX_VALUE;;
+        }
+
+        for (String st : filename) {
+            if (st.endsWith(".xml")) {
+                try {
+                    System.out.println("Processando arquivo: " + st);
+                    XmlDocument xdoc = XmlReader.parseDocument(sourcePath + File.separator + st);
+                    Document doc = Processor.doRender(xdoc, pauseA, pauseB);
+                    SaveToCSV.save(doc, targetPath + File.separator + removeXml(st) + ".csv");
+                } catch (Exception ex) {
+                    Logger.getLogger(Processor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    /**
      * Processa uma instância XmlDocument e retorna uma instância Document
      *
      * @param xDoc XmlDocument
      * @return
      */
-    public static Document doRender(XmlDocument xDoc) {
+    public static Document doRender(XmlDocument xDoc, Integer pauseA, Integer pauseB) {
         Document doc = new Document();
         doc.setSt(xDoc.getSt());
         doc.setStLanguage(xDoc.getStLanguage());
         doc.setSubject(xDoc.getSubject());
         doc.setTask(xDoc.getTask());
         doc.setTtLanguage(xDoc.getTtLanguage());
-        getMicroUnits(xDoc, doc);
+        getMicroUnits(xDoc, doc, pauseA, pauseB);
         return doc;
     }
 
-    private static void getMicroUnits(XmlDocument xDoc, Document doc) {
+    private static void getMicroUnits(XmlDocument xDoc, Document doc, Integer pauseA, Integer pauseB) {
         // Polimorfismo para conseguir todos os Eventos em ordem
         ArrayList<XmlEvent> eList = new ArrayList<>();
         eList.addAll(xDoc.getFixList());
         eList.addAll(xDoc.getActionList());
         sortEventList(eList);
-        // Dados da configuração
-        Integer pauseA = 2400;
-        Integer pauseB = Integer.MAX_VALUE;
         // Variaveis
         Integer dif = Integer.MIN_VALUE;
         Integer microUnitId = 1;
@@ -64,8 +115,7 @@ public class Processor {
         String saccade = "";
         Double saccadeSum = 0.0;
         Integer saccadeAc = 0;
-        Boolean secondAction = false;
-        Integer pastActionTime = 0;
+        Integer pastActionTime = Integer.MAX_VALUE;
         Integer currentActionTime = 0;
         Integer fixDurationSPause = 0;
         Integer fixCountSPause = 0;
@@ -75,7 +125,6 @@ public class Processor {
         String saccadePause = "";
         String saccadeAnglePause = "";
         Double saccadeSumPause = 0.0;
-        Double saccadeMeanPause = 0.0;
         Integer visitsPause = 0;
         Integer saccadeAcPause = 0;
 
@@ -83,36 +132,30 @@ public class Processor {
             seg.setMicroUnitId(microUnitId);
             seg.setStart(ti);
             XmlEvent e = eList.get(i);
+            dif = Integer.MIN_VALUE;
 
             //Verifica se é uma ação
-            if (e.getClass() == Action.class || e.getClass() == Key.class) {
-                secondAction = true;
+            //if (e.getClass() == Action.class || e.getClass() == Key.class) {
+            if (e.getClass() == Key.class) {
                 currentActionTime = e.getTime();
-
-                fixCountSPause = 0;
-                fixCountTPause = 0;
-                fixDurationSPause = 0;
-                fixDurationTPause = 0;
-                saccadePause = "";
-                saccadeAnglePause = "";
-                saccadeSumPause = 0.0;
-                saccadeMeanPause = 0.0;
-                visitsPause = 0;
-                saccadeAcPause = 0;
-            }
-
-            // Calcula a diferença entre as ações e atualiza variáveis
-            if (secondAction) {
                 dif = currentActionTime - pastActionTime;
                 pastActionTime = currentActionTime;
                 currentActionTime = 0;
-                secondAction = false;
             }
 
             /**
              * Verifica o tipo de evento e atualiza as variaveis correspondentes
              */
-            if (e.getClass() == Fix.class) {
+            if (e.getClass() == Key.class) {
+                Key key = (Key) e;
+                if ("delete".equalsIgnoreCase(key.getType())) {
+                    del++;
+                } else if ("insert".equalsIgnoreCase(key.getType())) {
+                    ins++;
+                }
+
+                linearRep = linearRep + key.getValue();
+            } else if (e.getClass() == Fix.class) {
                 Fix fix = (Fix) e;
                 if (fix.getWin() == 1) {
                     fixCountS++;
@@ -129,6 +172,7 @@ public class Processor {
                 }
             } else if (e.getClass() == TextFix.class) {
                 TextFix textFix = (TextFix) e;
+
                 if (textFix.getWin() == 1) {
                     fixDurationS += textFix.getDur();
                     fixCountS++;
@@ -142,7 +186,7 @@ public class Processor {
                 }
 
                 //Verifica se houve uma saccade na microunidade
-                if (xAnt != null && yAnt != null) {
+                if (xAnt != null && yAnt != null && textFix.getX() != null && textFix.getY() != null) {
                     distancia = distancia(xAnt, textFix.getX(), yAnt, textFix.getY());
                     saccadeSum += distancia;
                     saccadeSumPause += distancia;
@@ -150,27 +194,27 @@ public class Processor {
                     saccadeAcPause++;
 
                     if (saccade.isEmpty()) {
-                        saccade = saccade + distancia;
+                        saccade = saccade + format2f(distancia);
                     } else {
-                        saccade = saccade + "+" + distancia;
+                        saccade = saccade + "+" + format2f(distancia);
                     }
-                    
+
                     if (saccadePause.isEmpty()) {
-                        saccadePause = saccadePause + distancia;
+                        saccadePause = saccadePause + format2f(distancia);
                     } else {
-                        saccadePause = saccadePause + "+" + distancia;
+                        saccadePause = saccadePause + "+" + format2f(distancia);
                     }
 
                     if (saccadeAngle.isEmpty()) {
-                        saccadeAngle = saccadeAngle + Vector.getAngle(xAnt, yAnt, textFix.getX(), textFix.getY());
+                        saccadeAngle = saccadeAngle + format2f(Vector.getAngle(xAnt, yAnt, textFix.getX(), textFix.getY()));
                     } else {
-                        saccadeAngle = saccadeAngle + "+" + Vector.getAngle(xAnt, yAnt, textFix.getX(), textFix.getY());
+                        saccadeAngle = saccadeAngle + "+" + format2f(Vector.getAngle(xAnt, yAnt, textFix.getX(), textFix.getY()));
                     }
-                    
+
                     if (saccadeAnglePause.isEmpty()) {
-                        saccadeAnglePause = saccadeAnglePause + Vector.getAngle(xAnt, yAnt, textFix.getX(), textFix.getY());
+                        saccadeAnglePause = saccadeAnglePause + format2f(Vector.getAngle(xAnt, yAnt, textFix.getX(), textFix.getY()));
                     } else {
-                        saccadeAnglePause = saccadeAnglePause + "+" + Vector.getAngle(xAnt, yAnt, textFix.getX(), textFix.getY());
+                        saccadeAnglePause = saccadeAnglePause + "+" + format2f(Vector.getAngle(xAnt, yAnt, textFix.getX(), textFix.getY()));
                     }
                 }
 
@@ -178,16 +222,7 @@ public class Processor {
                 yAnt = textFix.getY();
             } else if (e.getClass() == Action.class) {
                 Action action = (Action) e;
-                linearRep = linearRep + action.getValue();
-            } else if (e.getClass() == Key.class) {
-                Key key = (Key) e;
-                if ("delete".equalsIgnoreCase(key.getType())) {
-                    del++;
-                } else if ("insert".equalsIgnoreCase(key.getType())) {
-                    ins++;
-                }
-
-                linearRep = linearRep + key.getValue();
+                linearRep = linearRep + action.toString();
             }
 
             /**
@@ -301,7 +336,6 @@ public class Processor {
                 saccade = "";
                 saccadeAngle = "";
                 saccadeSum = 0.0;
-                secondAction = false;
                 fixCountSPause = 0;
                 fixCountTPause = 0;
                 fixDurationSPause = 0;
@@ -309,12 +343,12 @@ public class Processor {
                 saccadePause = "";
                 saccadeAnglePause = "";
                 saccadeSumPause = 0.0;
-                saccadeMeanPause = 0.0;
                 visitsPause = 0;
                 saccadeAcPause = 0;
             }
 
-            if (e.getClass() == Action.class || e.getClass() == Key.class) {
+            //if (e.getClass() == Action.class || e.getClass() == Key.class) {
+            if (e.getClass() == Key.class) {
                 fixCountSPause = 0;
                 fixCountTPause = 0;
                 fixDurationSPause = 0;
@@ -322,7 +356,6 @@ public class Processor {
                 saccadePause = "";
                 saccadeAnglePause = "";
                 saccadeSumPause = 0.0;
-                saccadeMeanPause = 0.0;
                 visitsPause = 0;
                 saccadeAcPause = 0;
             }
@@ -364,5 +397,15 @@ public class Processor {
      */
     private static Double distancia(Integer x1, Integer y1, Integer x2, Integer y2) {
         return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+    }
+
+    /**
+     * Remove a extensão XML de uma String
+     *
+     * @param nome Nome do Arquivo fonte
+     * @return Nome sem extensão xml
+     */
+    public static String removeXml(String nome) {
+        return nome.replaceAll(".xml", "");
     }
 }

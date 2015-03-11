@@ -87,7 +87,7 @@ public class XmlReader {
         try {
             XmlDocument xmlDocument = new XmlDocument();
             File arq = new File(filename);
-            FileReader fr = new FileReader(arq);
+            FileReader fr = new FileReader(arq); //Problema aqui
             BufferedReader br = new BufferedReader(fr);
             String line;
             

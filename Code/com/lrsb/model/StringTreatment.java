@@ -12,7 +12,7 @@ package com.lrsb.model;
 public class StringTreatment {
 
     /**
-     * REquisitos Funcionais: RF07
+     * Requisitos Funcionais: RF07
      * 
      * A classe recebe o texto fonte e retorna as duas primeiras palavras 
      * do mesmo, afim de satisfazer o RF07..
@@ -60,6 +60,18 @@ public class StringTreatment {
      */
     public static String replaceLanguage(String st){
         return st.replace("”","\"");
+    }
+    
+    /**
+     * Formata um número com duas casas decimais.
+     * 
+     * @param n Um número
+     * @return O número com duas casas decimais.
+     */
+    
+    public static String format2f(Number n) {
+        String st = String.format("%.2f", n);
+        return st.replaceAll(",",".");
     }
 
 }

@@ -61,5 +61,17 @@ public class StringTreatment {
     public static String replaceLanguage(String st){
         return st.replace("”","\"");
     }
+    
+    /**
+     * Formata um número com duas casas decimais.
+     * 
+     * @param n Um número
+     * @return O número com duas casas decimais.
+     */
+    
+    public static String format2f(Number n) {
+        String st = String.format("%.2f", n);
+        return st.replaceAll(",",".");
+    }
 
 }

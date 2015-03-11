@@ -7,10 +7,10 @@ package com.lrsb.xmlElements;
 
 /**
  * Classe responsável por armazenar ações. As ações de Mouse são o padrão,
- * aç~pes de teclado são armazenadas na classe filha Key.
+ * ações de teclado são armazenadas na classe filha Key.
  * @author gabriel
  */
-public class Action {
+public class Action implements XmlEvent{
 
     /**
      * Tempo que a ação foi realizada.
@@ -46,10 +46,12 @@ public class Action {
         this.value = value;
         this.action = action;
     }
+    
     /**
      * Método get da variável time
      * @return the time
      */
+    @Override
     public Integer getTime() {
         return time;
     }
@@ -108,5 +110,10 @@ public class Action {
      */
     public void setAction(String action) {
         this.action = action;
+    }
+    
+    @Override
+    public String toString(){
+        return "{"+value+"}";
     }
 }

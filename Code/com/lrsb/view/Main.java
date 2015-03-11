@@ -5,6 +5,12 @@
  */
 package com.lrsb.view;
 
+import com.lrsb.model.Document;
+import com.lrsb.model.Processor;
+import com.lrsb.model.Segment;
+import com.lrsb.spreadsheet.SaveToCSV;
+import com.lrsb.xmlElements.XmlDocument;
+import com.lrsb.xmlElements.XmlReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +30,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Stages st = Stages.getInstance();
         st.showStage();
+        
+        //XmlDocument xdoc = XmlReader.parseDocument("C:\\XML\\P10_T2.xml");
+        //Document doc = Processor.doRender(xdoc);
+        //SaveToCSV.save(doc,"teste.csv");
+        //System.exit(0);   
     }
 
     /**

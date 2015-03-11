@@ -17,7 +17,7 @@ public class Document {
     private String st;
     private String stLanguage;
     private String ttLanguage;
-    private ArrayList<Segment> segments;
+    private ArrayList<Segment> segments = new ArrayList<>();
 
     /**
      * @return the subject
@@ -101,5 +101,17 @@ public class Document {
      */
     public void setSegments(ArrayList<Segment> segments) {
         this.segments = segments;
+    }
+    
+    public String documentToCSV(){
+        String str = "";
+        String aux = subject+","+task+","+st+","+stLanguage+","+ttLanguage+",";
+        
+        
+        for(Segment s : segments){
+            str = str+aux+s.segmentToCSV();
+        }
+        
+        return str;
     }
 }

@@ -80,9 +80,10 @@ public class MainScreenController implements Initializable {
     @FXML
     public void startProcess(){
         try {
-            XmlDocument xdoc = XmlReader.parseDocument("‪C:\\XML\\P10_T2.xml");
-            Document doc = Processor.doRender(xdoc);
-            SaveToCSV.save(doc,targetPathTF.getText()+".csv");
+            Processor.process(resourcePathTF.getText(),targetPathTF.getText(),pauseBegin.getText(),pauseEnd.getText());
+            //XmlDocument xdoc = XmlReader.parseDocument("‪C:\\XML\\P10_T2.xml");
+            //Document doc = Processor.doRender(xdoc);
+            //SaveToCSV.save(doc,targetPathTF.getText()+".csv");
         } catch (Exception ex) {
             Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -6,9 +6,16 @@
 package com.lrsb.view;
 
 import com.lrsb.config.Config;
+import com.lrsb.model.Document;
+import com.lrsb.model.Processor;
+import com.lrsb.spreadsheet.SaveToCSV;
+import com.lrsb.xmlElements.XmlDocument;
+import com.lrsb.xmlElements.XmlReader;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -72,7 +79,14 @@ public class MainScreenController implements Initializable {
     
     @FXML
     public void startProcess(){
-    
+        try {
+            Processor.process(resourcePathTF.getText(),targetPathTF.getText(),pauseBegin.getText(),pauseEnd.getText());
+            //XmlDocument xdoc = XmlReader.parseDocument("‪C:\\XML\\P10_T2.xml");
+            //Document doc = Processor.doRender(xdoc);
+            //SaveToCSV.save(doc,targetPathTF.getText()+".csv");
+        } catch (Exception ex) {
+            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @FXML

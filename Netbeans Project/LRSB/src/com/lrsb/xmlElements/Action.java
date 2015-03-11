@@ -111,4 +111,9 @@ public class Action implements XmlEvent{
     public void setAction(String action) {
         this.action = action;
     }
+    
+    @Override
+    public String toString(){
+        return "{"+value+"}";
+    }
 }

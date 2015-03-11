@@ -29,12 +29,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Stages st = Stages.getInstance();
-        //st.showStage();
+        st.showStage();
         
-        XmlDocument xdoc = XmlReader.parseDocument("C:\\XML\\P10_T2.xml");
-        Document doc = Processor.doRender(xdoc);
-        SaveToCSV.save(doc,"teste.csv");
-        System.exit(0);   
+        //XmlDocument xdoc = XmlReader.parseDocument("C:\\XML\\P10_T2.xml");
+        //Document doc = Processor.doRender(xdoc);
+        //SaveToCSV.save(doc,"teste.csv");
+        //System.exit(0);   
     }
 
     /**

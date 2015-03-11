@@ -5,6 +5,8 @@
  */
 package com.lrsb.model;
 
+import static com.lrsb.model.StringTreatment.format2f;
+
 /**
  *
  * @author gabriel
@@ -12,7 +14,7 @@ package com.lrsb.model;
 public class Segment {
 
     private Integer microUnitId;
-    private Integer linearRep;
+    private String linearRep;
     private Integer pause;
     private Integer pauseType;
     private Integer start;
@@ -21,11 +23,13 @@ public class Segment {
     private Integer durationT;
     private Integer fixCountS;
     private Integer fixDurationS;
+    private Double meanDurationS;
     private Integer fixCountT;
     private Integer fixDurationT;
     private Double meanDurationT;
     private Integer fixCountST;
     private Integer fixDurationST;
+    private Double meanDurationST;
     private Integer fixCountSPause;
     private Integer fixDurationSPause;
     private Double meanDurationSPause;
@@ -37,15 +41,32 @@ public class Segment {
     private Double meanDurationSTPause;
     private Integer visits;
     private Integer visitsPause;
-    private Integer saccade;
-    private Integer sacaddeAngle;
-    private Integer saccadeSum;
-    private Integer saccadeMean;
-    private Integer saccadePause;
-    private Integer saccadeSumPause;
+    private String saccade;
+    private String sacaddeAngle;
+    private Double saccadeSum;
+    private Double saccadeMean;
+    private String saccadePause;
+    private String saccadeAnglePause;
+    private Double saccadeSumPause;
     private Double saccadeMeanPause;
     private Integer ins;
     private Integer del;
+
+    /**
+     *
+     * @return
+     */
+    public String getSaccadeAnglePause() {
+        return saccadeAnglePause;
+    }
+
+    /**
+     *
+     * @param saccadeAnglePause
+     */
+    public void setSaccadeAnglePause(String saccadeAnglePause) {
+        this.saccadeAnglePause = saccadeAnglePause;
+    }
 
     /**
      * @return the microUnitId
@@ -64,14 +85,14 @@ public class Segment {
     /**
      * @return the linearRep
      */
-    public Integer getLinearRep() {
+    public String getLinearRep() {
         return linearRep;
     }
 
     /**
      * @param linearRep the linearRep to set
      */
-    public void setLinearRep(Integer linearRep) {
+    public void setLinearRep(String linearRep) {
         this.linearRep = linearRep;
     }
 
@@ -400,84 +421,84 @@ public class Segment {
     /**
      * @return the saccade
      */
-    public Integer getSaccade() {
+    public String getSaccade() {
         return saccade;
     }
 
     /**
      * @param saccade the saccade to set
      */
-    public void setSaccade(Integer saccade) {
+    public void setSaccade(String saccade) {
         this.saccade = saccade;
     }
 
     /**
      * @return the sacaddeAngle
      */
-    public Integer getSacaddeAngle() {
+    public String getSacaddeAngle() {
         return sacaddeAngle;
     }
 
     /**
      * @param sacaddeAngle the sacaddeAngle to set
      */
-    public void setSacaddeAngle(Integer sacaddeAngle) {
+    public void setSacaddeAngle(String sacaddeAngle) {
         this.sacaddeAngle = sacaddeAngle;
     }
 
     /**
      * @return the saccadeSum
      */
-    public Integer getSaccadeSum() {
+    public Double getSaccadeSum() {
         return saccadeSum;
     }
 
     /**
      * @param saccadeSum the saccadeSum to set
      */
-    public void setSaccadeSum(Integer saccadeSum) {
+    public void setSaccadeSum(Double saccadeSum) {
         this.saccadeSum = saccadeSum;
     }
 
     /**
      * @return the saccadeMean
      */
-    public Integer getSaccadeMean() {
+    public Double getSaccadeMean() {
         return saccadeMean;
     }
 
     /**
      * @param saccadeMean the saccadeMean to set
      */
-    public void setSaccadeMean(Integer saccadeMean) {
+    public void setSaccadeMean(Double saccadeMean) {
         this.saccadeMean = saccadeMean;
     }
 
     /**
      * @return the saccadePause
      */
-    public Integer getSaccadePause() {
+    public String getSaccadePause() {
         return saccadePause;
     }
 
     /**
      * @param saccadePause the saccadePause to set
      */
-    public void setSaccadePause(Integer saccadePause) {
+    public void setSaccadePause(String saccadePause) {
         this.saccadePause = saccadePause;
     }
 
     /**
      * @return the saccadeSumPause
      */
-    public Integer getSaccadeSumPause() {
+    public Double getSaccadeSumPause() {
         return saccadeSumPause;
     }
 
     /**
      * @param saccadeSumPause the saccadeSumPause to set
      */
-    public void setSaccadeSumPause(Integer saccadeSumPause) {
+    public void setSaccadeSumPause(Double saccadeSumPause) {
         this.saccadeSumPause = saccadeSumPause;
     }
 
@@ -523,11 +544,68 @@ public class Segment {
         this.del = del;
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getPauseType() {
         return pauseType;
     }
 
+    /**
+     *
+     * @param pauseType
+     */
     public void setPauseType(Integer pauseType) {
         this.pauseType = pauseType;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Double getMeanDurationS() {
+        return meanDurationS;
+    }
+
+    /**
+     *
+     * @param meanDurationS
+     */
+    public void setMeanDurationS(Double meanDurationS) {
+        this.meanDurationS = meanDurationS;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Double getMeanDurationST() {
+        return meanDurationST;
+    }
+
+    /**
+     *
+     * @param meanDurationST
+     */
+    public void setMeanDurationST(Double meanDurationST) {
+        this.meanDurationST = meanDurationST;
+    }
+    
+    public String segmentToCSV(){
+        String str;
+        
+        str = microUnitId+","+"\""+linearRep+"\""+","+pause+","+pauseType+","+start+","+end
+                +","+durationM+","+durationT+","+fixCountS+","+fixDurationS
+                +","+format2f(meanDurationS)+","+fixCountT+","+fixDurationT+","+format2f(meanDurationT)
+                +","+fixCountST+","+fixDurationST+","+format2f(meanDurationST)+","+fixCountSPause
+                +","+fixDurationSPause+","+format2f(meanDurationSPause)+","+fixCountTPause
+                +","+fixDurationTPause+","+format2f(meanDurationTPause)+","+fixCountSTPause
+                +","+fixDurationSTPause+","+format2f(meanDurationSTPause)+","+visits+","+visitsPause
+                +","+saccade+","+sacaddeAngle+","+format2f(saccadeSum)+","+format2f(saccadeMean)+
+                ","+saccadePause+","+saccadeAnglePause+","+format2f(saccadeSumPause)
+                +","+format2f(saccadeMeanPause)+","+ins+","+del+"\n";
+        
+        return str;
     }
 }

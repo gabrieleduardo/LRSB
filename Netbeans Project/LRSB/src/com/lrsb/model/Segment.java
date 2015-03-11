@@ -5,6 +5,8 @@
  */
 package com.lrsb.model;
 
+import static com.lrsb.model.StringTreatment.format2f;
+
 /**
  *
  * @author gabriel
@@ -593,16 +595,16 @@ public class Segment {
     public String segmentToCSV(){
         String str;
         
-        str = microUnitId+","+linearRep+","+pause+","+pauseType+","+start+","+end
+        str = microUnitId+","+"\""+linearRep+"\""+","+pause+","+pauseType+","+start+","+end
                 +","+durationM+","+durationT+","+fixCountS+","+fixDurationS
-                +","+meanDurationS+","+fixCountT+","+fixDurationT+","+meanDurationT
-                +","+fixCountST+","+fixDurationST+","+meanDurationST+","+fixCountSPause
-                +","+fixDurationSPause+","+meanDurationSPause+","+fixCountTPause
-                +","+fixDurationTPause+","+meanDurationTPause+","+fixCountSTPause
-                +","+fixDurationSTPause+","+meanDurationSTPause+","+visits+","+visitsPause
-                +","+saccade+","+sacaddeAngle+","+saccadeSum+","+saccadeMean+
-                ","+saccadePause+","+saccadeAnglePause+","+saccadeSumPause
-                +","+saccadeMeanPause+","+ins+","+del+"\n";
+                +","+format2f(meanDurationS)+","+fixCountT+","+fixDurationT+","+format2f(meanDurationT)
+                +","+fixCountST+","+fixDurationST+","+format2f(meanDurationST)+","+fixCountSPause
+                +","+fixDurationSPause+","+format2f(meanDurationSPause)+","+fixCountTPause
+                +","+fixDurationTPause+","+format2f(meanDurationTPause)+","+fixCountSTPause
+                +","+fixDurationSTPause+","+format2f(meanDurationSTPause)+","+visits+","+visitsPause
+                +","+saccade+","+sacaddeAngle+","+format2f(saccadeSum)+","+format2f(saccadeMean)+
+                ","+saccadePause+","+saccadeAnglePause+","+format2f(saccadeSumPause)
+                +","+format2f(saccadeMeanPause)+","+ins+","+del+"\n";
         
         return str;
     }
