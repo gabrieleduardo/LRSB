@@ -54,7 +54,7 @@ public class MenuBarController implements Initializable {
     @FXML
     private void openAbout(){
         try {
-            java.awt.Desktop.getDesktop().browse(new URI("http://globo.com"));
+            java.awt.Desktop.getDesktop().browse(new URI("http://www.gabrieleduardo.me/LRSB"));
         } catch (IOException | URISyntaxException ex) {
             Logger.getLogger(MenuBarController.class.getName()).log(Level.SEVERE, null, ex);
         }

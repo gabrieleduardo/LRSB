@@ -95,7 +95,7 @@ public class XmlReader {
             /**
              * Valida o RF05 iniciando o valor do subject com o nome do documento
              * Caso exista um valor de subject no documento, o mesmo irá sobrepor
-             * esse valor posteriormente..
+             * esse valor posteriormente.
              */
             xmlDocument.setSubject(StringTreatment.getXMLName(filename)); 
 
@@ -137,7 +137,15 @@ public class XmlReader {
                     String[] rv = parseElement(line);
                     xmlDocument.setStLanguage(rv[0]);
                     xmlDocument.setTtLanguage(rv[1]);
-                    xmlDocument.setTask(rv[2]);
+                    
+                    /**
+                     * RF 06 – Caso o campo task esteja vazio a aplicação deve colocar o valor NA.
+                     */
+                    if(rv[2] != null){
+                        xmlDocument.setTask(rv[2]);
+                    }else{
+                        xmlDocument.setTask("NA");
+                    }
                 }
             }
 

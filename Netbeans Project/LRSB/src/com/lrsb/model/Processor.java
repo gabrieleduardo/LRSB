@@ -23,7 +23,12 @@ import java.util.logging.Logger;
 public class Processor {
 
     /**
-     *
+     * RF08,RF09
+     * 
+     * @param sourcePath Texto Fonte
+     * @param targetPath Texto Alvo
+     * @param pauseBegin Inicio do intervalo para validação da pausa
+     * @param pauseEnd Fim do intervalo para validação da pausa
      */
     public static void process(String sourcePath, String targetPath, String pauseBegin, String pauseEnd) {
         File dir = new File(sourcePath);
@@ -37,6 +42,18 @@ public class Processor {
         Integer pauseA;
         Integer pauseB;
 
+        /**
+         * RF 08 – O pesquisados deve poder indicar o valor de pausa. 
+         * O default é de 2400 ms.
+         * 
+         * RF 09 – O pesquisador deve poder determinar o valor mínimo e 
+         * máximo de uma pausa.
+         * 
+         * Nota: Caso o valor máximo não seja informado, será considerado
+         * o valor máximo do tipo de dados inteiro.
+         */
+        
+        
         if (pauseBegin.matches("^(?!^0)\\d{1,9}$")) {
             pauseA = Integer.parseInt(pauseBegin);
             if(pauseA < 0){
@@ -134,8 +151,7 @@ public class Processor {
             XmlEvent e = eList.get(i);
             dif = Integer.MIN_VALUE;
 
-            //Verifica se é uma ação
-            //if (e.getClass() == Action.class || e.getClass() == Key.class) {
+            
             if (e.getClass() == Key.class) {
                 currentActionTime = e.getTime();
                 dif = currentActionTime - pastActionTime;

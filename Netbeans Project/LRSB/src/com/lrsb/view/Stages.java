@@ -23,7 +23,7 @@ import javafx.stage.Stage;
  */
 public class Stages {
 
-    private final String tutorial = "http://gabrieleduardo.github.io/MicroUnits";
+    private final String tutorial = "http://www.gabrieleduardo.me/LRSB/";
     
     private final Stage stage;
     private final Stage browserStage;

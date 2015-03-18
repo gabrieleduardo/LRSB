@@ -7,15 +7,16 @@ package com.lrsb.model;
 
 /**
  * Classe responsável pelo tratamento de Strings
+ *
  * @author gabriel
  */
 public class StringTreatment {
 
     /**
      * Requisitos Funcionais: RF07
-     * 
-     * A classe recebe o texto fonte e retorna as duas primeiras palavras 
-     * do mesmo, afim de satisfazer o RF07..
+     *
+     * A classe recebe o texto fonte e retorna as duas primeiras palavras do
+     * mesmo, afim de satisfazer o RF07.
      *
      * @param st - Texto Fonte
      * @return Uma string com as duas primeiras palavras do texto fonte.
@@ -29,11 +30,35 @@ public class StringTreatment {
         }
 
         return returnValue;
+
+    }
+
+    /**
+     * Requisitos Funcionais: RF07
+     *
+     * A classe recebe o texto fonte e retorna os dois primeiros caracteres do
+     * mesmo, afim de satisfazer o RF07.
+     *
+     * @param st - Texto Fonte
+     * @return Uma string com as duas primeiras palavras do texto fonte.
+     */
+    public static String getFirstTwoAsian(String st) {
+        String returnValue = "";
+        char[] charArray = st.toCharArray();
+
+        if (charArray.length > 2) {
+            returnValue = returnValue + charArray[0] + charArray[1];
+        } else {
+            returnValue = st;
+        }
+
+        return returnValue;
+
     }
 
     /**
      * Retorna o nome do arquivo XML através de seu caminho.
-     * 
+     *
      * @param path - Caminho do documento
      * @return Nome do Documento.
      */
@@ -50,28 +75,27 @@ public class StringTreatment {
         returnValue = returnValue.replace(".xml", "");
         return returnValue;
     }
-    
+
     /**
      * Corrige um erro percebido no campo Languages de um documento, onde as
-     * aspas não era fechadas corretamente. 
-     * 
+     * aspas não era fechadas corretamente.
+     *
      * @param st - String do campo Languages.
      * @return String corrigida.
      */
-    public static String replaceLanguage(String st){
-        return st.replace("”","\"");
+    public static String replaceLanguage(String st) {
+        return st.replace("”", "\"");
     }
-    
+
     /**
      * Formata um número com duas casas decimais.
-     * 
+     *
      * @param n Um número
      * @return O número com duas casas decimais.
      */
-    
     public static String format2f(Number n) {
         String st = String.format("%.2f", n);
-        return st.replaceAll(",",".");
+        return st.replaceAll(",", ".");
     }
 
 }
