@@ -21,7 +21,6 @@
  * along with this program. If not, see http://www.gnu.org/licenses/.
  */
 package com.lrsb.config;
-
 import java.io.File;
 import java.io.Serializable;
 
@@ -31,6 +30,9 @@ import java.io.Serializable;
  *
  * @author Gabriel Ed.
  */
+
+//TODO Alterar a classe para utilizar JSON e não binários para a configuração da aplicação.
+
 public class Config implements Serializable {
 
     /**

@@ -138,46 +138,4 @@ public class Document {
 
         return str;
     }
-
-    /**
-     * TODO
-     * 
-     * RF18
-     * @return 
-     */
-    
-    /*
-    public ConsolidatedDocument getConsilidatedDocument() {
-        ConsolidatedDocument cd = new ConsolidatedDocument();
-
-        for (Segment s : segments) {
-            //cd.totalDuration = ;
-            cd.setTotalFixCountS((Double) (cd.getTotalFixCountS() + s.getFixCountS()));
-            cd.setTotalFixDurS((Double) (cd.getTotalFixDurS() + s.getFixDurationS()));
-            cd.setTotalFixCountT((Double) (cd.getTotalFixCountT() + s.getFixCountT()));
-            cd.setTotalFixDurT((Double) (cd.getTotalFixDurT() + s.getFixDurationT()));
-            cd.setTotalFixCountST((Double) (cd.getTotalFixCountST() + s.getFixCountST()));
-            cd.setTotalFixDurST((Double) (cd.getTotalFixDurST() + s.getFixDurationST()));
-            cd.setTotalVisits((Double) (cd.getTotalVisits() + s.getVisits()));
-            cd.setTotalIns((Double) (cd.getTotalIns() + s.getIns()));
-            cd.setTotalDel((Double) (cd.getTotalDel() + s.getDel()));
-            //cd.totalSaccade += s.getSaccadeSum();
-            //cd.totalSaccadeSize += s.getS;
-            cd.setPtotalFixCountS(cd.getPtotalFixCountS() + s.getFixCountSPause());
-            cd.setPtotalFixDurS(cd.getPtotalFixDurS() + s.getFixDurationSPause());
-            cd.setPtotalFixCountT(cd.getPtotalFixCountT() + s.getFixCountSTPause());
-            cd.setPtotalFixDurT(cd.getPtotalFixDurT() + s.getFixDurationTPause());
-            cd.setPtotalFixCountST(cd.getPtotalFixCountST() + s.getFixCountSTPause());
-            cd.setPtotalVisits(cd.getPtotalVisits() + s.getVisitsPause());
-        }
-
-        cd.setTotalMeanFixS(cd.getTotalFixDurS() / segments.size());
-        cd.setTotalMeanFixT(cd.getTotalFixDurT() / segments.size());
-        cd.setTotalMeanFixST(cd.getTotalFixDurST() / segments.size());
-        //cd.totalMeanSaccade;
-        //cd.setPtotalMeanFixS(cd.total);
-        cd.setPtotalMeanFixT(null);
-        return cd;
-    }
-    */
 }
