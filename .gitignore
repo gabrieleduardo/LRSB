@@ -1,2 +1,5 @@
-/Netbeans Project/LRSB/build/
-/Netbeans Project/LRSB/dist/
+-- Ignores build e dist files
+
+build/*
+dist/*
+lib/*
