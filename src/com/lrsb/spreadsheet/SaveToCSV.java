@@ -34,10 +34,10 @@ import java.util.logging.Logger;
 public class SaveToCSV {
     
     /**
-     * Cabeçalho do arquivo CSV.
+     * Cabeçalho do arquivo CSV não consolidado.
      */
 
-    private static final String header = "sep=,\n"
+    private static final String HEADER = "sep=,\n"
             + "Subject,Task,ST,STlanguage,TTlanguage,"
             + "MicroUnitId,LinearRep,Pause,Start,End,"
             + "DurationM,FixCountS,FixDurationS,MeanDurationS,FixCountT,"
@@ -49,40 +49,56 @@ public class SaveToCSV {
             + "ins,del\n";
 
     /**
-     * 
-     * @param doc
-     * @param filePath 
+     * Salva os indicadores processados de um documento para um arquivo no formato CSV.
+     * @param doc Documento a ser salvo em CSV.
+     * @param filePath Caminho do diretório para salvar o arquivo.
      */
     
-    public static void save(Document doc, String filePath) {
-        try {
-            FileWriter fw = new FileWriter(filePath);
-            fw.append(header);
-            fw.append(doc.documentToCSV());
-            fw.close();
-
-        } catch (IOException ex) {
-            Logger.getLogger(SaveToCSV.class.getName()).log(Level.SEVERE, null, ex);
+    public static void simpleFileToCSV (Document doc, String filePath) {
+        String text = HEADER+doc.documentToCSV();
+        
+        if(!save(text,filePath)){
+            //TODO: Adicionar erro ao log
         }
     }
     
     /**
-     * 
-     * @param docList
-     * @param filePath 
+     * Salva os indicadores processados de cada um dos documentos de uma lista em um único arquivo no formato CSV.
+     * @param docList Lista de Documentos a serem salvos em um CSV.
+     * @param filePath Caminho do diretório para salvar o arquivo.
+     * @return True em caso de sucesso, False em caso de falha.
      */
+    public static boolean singleFileToCSV (ArrayList<Document> docList, String filePath){
+        String text = HEADER;
+        
+        for(Document doc : docList){
+            text += doc.documentToCSV();
+        }
+        
+        if(!save(text,filePath)){
+            //TODO: Adicionar erro ao log
+            return false;
+        }
+        
+        return true;
+    }
     
-    public static void saveSinglefile(ArrayList<Document> docList, String filePath) {
-        try {
-            FileWriter fw = new FileWriter(filePath);
-            fw.append(header);
-            for(Document doc : docList){
-                fw.append(doc.documentToCSV());
-            }
+    /**
+     *
+     * @param text
+     * @param filePath
+     * @return
+     */
+    public static boolean save(String text, String filePath) {
+        try (FileWriter fw = new FileWriter(filePath)) {
+            fw.append(text);
             fw.close();
-
+            return true;
         } catch (IOException ex) {
             Logger.getLogger(SaveToCSV.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            //TODO: Adicionar erro ao log
+            return false;
         }
     }
 }

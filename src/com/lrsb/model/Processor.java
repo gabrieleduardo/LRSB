@@ -51,8 +51,8 @@ public class Processor {
     /**
      * Objetos para recuperação de data.
      */
-    private static final DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
-    private static final Calendar cal = Calendar.getInstance();
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
+    private static final Calendar CALENDAR = Calendar.getInstance();
 
     /**
      * RF08,RF09
@@ -129,7 +129,7 @@ public class Processor {
                     if (!processSingleFile) {
                         Date dt = new Date();
                         String savePath = targetPath + File.separator + removeXml(st) + "+" + dt.getTime() + ".csv";
-                        SaveToCSV.save(doc, savePath);
+                        SaveToCSV.simpleFileToCSV(doc, savePath);
                     } else {
                         docList.add(doc);
                     }
@@ -147,7 +147,7 @@ public class Processor {
         if (processSingleFile) {
             Date dt = new Date();
             String savePath = targetPath + File.separator + "all+" + dt.getTime() + ".csv";
-            SaveToCSV.saveSinglefile(docList,savePath);
+            SaveToCSV.singleFileToCSV(docList,savePath);
         }
 
         System.out.println("Todos arquivos processados");
