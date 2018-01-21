@@ -334,7 +334,7 @@ public class XmlReader {
 
         NodeList nodeList = (NodeList) xPath.compile(expressionSourceText).evaluate(xmlDocument, XPathConstants.NODESET);
         String returnValue = nodeList.item(0).getTextContent();
-        return StringTreatment.getFirstTwo(returnValue);
+        return StringTreatment.getFirstTwoWords(returnValue);
     }
 
     /**
