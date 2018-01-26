@@ -21,7 +21,8 @@
 package com.lrsb.xmlElements;
 
 /**
- *
+ * Interface utilizada para garantir que todos tipos de eventos do arquivos XML
+ * possuam um método de recuperação do tempo do evento.
  * @author gabriel
  */
 public interface XmlEvent {
