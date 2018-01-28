@@ -67,10 +67,13 @@ public class MenuScreenController implements Initializable {
 
     @FXML
     private void defaultDirectoryPathSearch(ActionEvent event) {
+        defaultDirectoryPath.setText("D:\\CSV\\");
+        /*
         DirectoryChooser dc = new DirectoryChooser();
         dc.setTitle("Resource Directory");
         File file = dc.showDialog(new Stage());
         defaultDirectoryPath.setText(file.toString());
+        */
     }
 
     @FXML

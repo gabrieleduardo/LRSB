@@ -53,8 +53,9 @@ public class SaveToCSV {
      * @param doc Documento a ser salvo em CSV.
      * @param filePath Caminho do diretório para salvar o arquivo.
      */
-    public static void simpleFileToCSV(Document doc, String filePath) {
-        String text = HEADER + doc.documentToCSV();
+    public static void simpleFileToCSV(Document doc, String filePath){
+        
+       String text = HEADER + doc.documentToCSV();
 
         if (!save(text, filePath)) {
             //TODO: Adicionar erro ao log

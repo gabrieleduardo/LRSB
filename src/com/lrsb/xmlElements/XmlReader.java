@@ -22,10 +22,12 @@ package com.lrsb.xmlElements;
 import com.lrsb.model.StringTreatment;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -46,42 +48,47 @@ import org.xml.sax.InputSource;
 public class XmlReader {
 
     /**
-     * Exprassão xpath responsável pela leitura do campo Languages
+     * Expressão xpath responsável pela leitura do campo Languages
      */
     private static final String LANGUAGES = "//Languages";
 
     /**
-     * Exprassão xpath responsável pela leitura do campo SourceTextUTF8 Campo
+     * Expressão xpath responsável pela leitura do campo SourceTextUTF8 Campo
      * referente ao texto fonte.
      */
     private static final String SOURCE_TEXT = "//SourceTextUTF8";
 
     /**
-     * Exprassão xpath responsável pela leitura do campo Subject Pode não
+     * Expressão xpath responsável pela leitura do campo Subject Pode não
      * existir em alguns documentos.
      */
     private static final String SUBJECT = "//Subject";
 
     /**
-     * Exprassão xpath responsável pela leitura do campo Key
+     * Expressão xpath responsável pela leitura do campo Key
      */
     private static final String KEY = "//Key";
 
     /**
-     * Exprassão xpath responsável pela leitura do campo mouse
+     * Expressão xpath responsável pela leitura do campo mouse
      */
     private static final String MOUSE = "//Mouse";
 
     /**
-     * Exprassão xpath responsável pela leitura das janelas válidas. Win = 1
+     * Expressão xpath responsável pela leitura das janelas válidas. Win = 1
      * representa o texto fonte. Win = 2 represneta o texto alvo.
      */
     private static final String FIXATION = "//Fix[@Win='1' or @Win='2']";
 
     /**
-     * Exprassão xpath responsável pela leitura do tempo final da atividade
+     * Expressão xpath responsável pela leitura do tempo final da atividade
      */
     private static final String FINAL_TIME = "//System[@Value='STOP']";
+    
+    /**
+     * Encode padrão do sistema.
+     */
+    private static final String ENCODE = System.getProperty("file.encoding");
 
     /**
      * Requisitos Funcionais: RF04,RF05,RF06,RF07
@@ -101,8 +108,9 @@ public class XmlReader {
         try {
             XmlDocument xmlDocument = new XmlDocument();
             File file = new File(filename);
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+               
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODE));
+
             String textLine;
 
             /**
@@ -118,7 +126,7 @@ public class XmlReader {
              * xpath.
              */
             while (bufferedReader.ready()) {
-                textLine = bufferedReader.readLine();
+                textLine = ensuresUTF8(bufferedReader.readLine());
 
                 if (textLine.contains("<Fix")) {
                     xmlDocument.getFixList().add(parseFixation(textLine));
@@ -147,6 +155,9 @@ public class XmlReader {
                     xmlDocument.setSt(parseSourceText(textLine));
 
                 } else if (textLine.contains("<Languages")) {
+                    
+                    System.out.println("Texto recebido: "+textLine);
+
                     textLine = StringTreatment.replaceLanguage(textLine);
                     String[] translationLanguages = parseElement(textLine);
                     xmlDocument.setStLanguage(translationLanguages[0]);
@@ -366,6 +377,14 @@ public class XmlReader {
         DocumentBuilder builder = factory.newDocumentBuilder();
         InputSource inputSource = new InputSource(new StringReader(xml));
         return builder.parse(inputSource);
+    }
+
+    private static String ensuresUTF8(String text) throws UnsupportedEncodingException, InterruptedException {
+        return System.getProperty("file.encoding").equalsIgnoreCase("UTF-8") ? text : convertToUTF8(text) ;
+    }
+
+    private static String convertToUTF8(String text) throws UnsupportedEncodingException, InterruptedException {
+        return new String(text.getBytes(),"UTF-8");
     }
 
 }
