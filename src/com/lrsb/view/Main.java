@@ -29,14 +29,9 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
     @Override
-    public void start(Stage primaryStage) throws Exception {    
+    public void start(Stage primaryStage) throws Exception {   
         Stages st = Stages.getInstance();
         st.showStage();
-        
-        //XmlDocument xdoc = XmlReader.parseDocument("C:\\XML\\P10_T2.xml");
-        //Document doc = Processor.doRender(xdoc);
-        //SaveToCSV.save(doc,"teste.csv");
-        //System.exit(0);   
     }
 
     /**

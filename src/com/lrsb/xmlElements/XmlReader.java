@@ -27,7 +27,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -121,12 +120,12 @@ public class XmlReader {
             xmlDocument.setSubject(StringTreatment.getXMLName(filename));
 
             /**
-             * Faz a leitura de todas as linahs do documento, a leitura
+             * Faz a leitura de todas as linhas do documento, a leitura
              * sequêncial garante um desempenho superior a busca dos nodes no
              * xpath.
              */
             while (bufferedReader.ready()) {
-                textLine = ensuresUTF8(bufferedReader.readLine());
+                textLine = bufferedReader.readLine();
 
                 if (textLine.contains("<Fix")) {
                     xmlDocument.getFixList().add(parseFixation(textLine));
@@ -378,13 +377,4 @@ public class XmlReader {
         InputSource inputSource = new InputSource(new StringReader(xml));
         return builder.parse(inputSource);
     }
-
-    private static String ensuresUTF8(String text) throws UnsupportedEncodingException, InterruptedException {
-        return System.getProperty("file.encoding").equalsIgnoreCase("UTF-8") ? text : convertToUTF8(text) ;
-    }
-
-    private static String convertToUTF8(String text) throws UnsupportedEncodingException, InterruptedException {
-        return new String(text.getBytes(),"UTF-8");
-    }
-
 }

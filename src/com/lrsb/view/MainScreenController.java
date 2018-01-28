@@ -21,11 +21,7 @@
 package com.lrsb.view;
 
 import com.lrsb.config.Config;
-import com.lrsb.model.Document;
 import com.lrsb.model.Processor;
-import com.lrsb.spreadsheet.SaveToCSV;
-import com.lrsb.xmlElements.XmlDocument;
-import com.lrsb.xmlElements.XmlReader;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
