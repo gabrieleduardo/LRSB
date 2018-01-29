@@ -20,34 +20,39 @@
 package com.lrsb.xmlElements;
 
 /**
- * Classe responsável por armazenar as fixações.
- *
+ * Classe responsável por armazenar as fixações do documento processado.
+ * 
  * @author gabriel
  */
 public class Fix implements XmlEvent {
+    
+    /**
+     * Optou-se por manter o nome dos atributos do arquivo XML como nome dos
+     * campos da classe.
+     */
 
     /**
-     * Tempo da fixação
+     * Tempo que ocorreu a fixação.
      */
     protected Integer time;
 
     /**
-     * Tempo total da fixação
+     * Tempo total da fixação.
      */
     protected Integer tt;
 
     /**
-     * Janela da Fixação
+     * Janela da Fixação.
      */
     protected Integer win;
 
     /**
-     * Cursor
+     * Cursor.
      */
     protected Integer cursor;
 
     /**
-     * Construtor vazio
+     * Construtor vazio.
      */
     public Fix() {
     }
@@ -55,10 +60,10 @@ public class Fix implements XmlEvent {
     /**
      * Construtor da classe fix.
      *
-     * @param time - Tempo
-     * @param tt - Tempo Total
-     * @param win - Janela
-     * @param cursor - Cursor
+     * @param time Valor do tempo (time) que ocorreu a fixação.
+     * @param tt Valor do tempo total (tt) da fixação.
+     * @param win Janela que ocorreu a fixação.
+     * @param cursor Cursor.
      */
     public Fix(Integer time, Integer tt, Integer win, Integer cursor) {
         this.time = time;
@@ -68,9 +73,9 @@ public class Fix implements XmlEvent {
     }
 
     /**
-     * Método get da variável time
+     * Método get da variável time.
      *
-     * @return the time
+     * @return Retorna o valor do campo time.
      */
     @Override
     public Integer getTime() {
@@ -78,63 +83,63 @@ public class Fix implements XmlEvent {
     }
 
     /**
-     * Método set da variável time
+     * Método set da variável time.
      *
-     * @param time the time to set
+     * @param time Novo valor do campo time.
      */
     public void setTime(Integer time) {
         this.time = time;
     }
 
     /**
-     * Método get da variável tt
+     * Método get da variável tt.
      *
-     * @return the tt
+     * @return Retorna o valor do campo tt.
      */
     public Integer getTt() {
         return tt;
     }
 
     /**
-     * Método set da variável tt
+     * Método set da variável tt.
      *
-     * @param tt the tt to set
+     * @param tt Novo valor do campo tt.
      */
     public void setTt(Integer tt) {
         this.tt = tt;
     }
 
     /**
-     * Método get da variável Win
+     * Método get da variável Win.
      *
-     * @return the win
+     * @return Retorna o valor do campo win.
      */
     public Integer getWin() {
         return win;
     }
 
     /**
-     * Método set da variável Win
+     * Método set da variável Win.
      *
-     * @param win the win to set
+     * @param win Novo valor do campo win.
      */
     public void setWin(Integer win) {
         this.win = win;
     }
 
     /**
-     * Método get da variável cursor
+     * Método get da variável cursor.
      *
-     * @return the cursor
+     * @return Retorna o valor do campo cursor.
      */
     public Integer getCursor() {
         return cursor;
     }
 
     /**
-     * Método get da variável cursor
+     * Método get da variável cursor.
      *
-     * @param cursor the cursor to set
+     * @param cursor Novo valor do campo cursor.
      */
     public void setCursor(Integer cursor) {
         this.cursor = cursor;

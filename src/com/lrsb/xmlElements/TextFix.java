@@ -20,19 +20,43 @@
 package com.lrsb.xmlElements;
 
 /**
- *
+ * Classe responsável por armazenar as fixações de texto do documento processado.
  * @author gabriel
  */
 public class TextFix extends Fix {
 
+    /**
+     * Optou-se por manter o nome dos atributos do arquivo XML como nome dos
+     * campos da classe.
+     */
+    
+    /**
+     * Armazena o valor do campo block do documento xml.
+     */
     private Integer block;
+    
+    /**
+     * Texto onde houve a fixação.
+     */
     private String text;
+    
+    /**
+     * Coordenada do eixo x da tela onde houve a fixação.
+     */
     private Integer x;
+    
+    /**
+     * Coordenada do eixo x da tela onde houve a fixação.
+     */
     private Integer y;
+    
+    /**
+     * Duração da fixação.
+     */
     private Integer dur;
 
     /**
-     * Construtor Vazio
+     * Construtor Vazio.
      */
     public TextFix() {
     }
@@ -40,15 +64,15 @@ public class TextFix extends Fix {
     /**
      * Construtor da classe TextFix.
      *
-     * @param time
-     * @param tt
-     * @param win
-     * @param cursor
-     * @param block
-     * @param text
-     * @param x
-     * @param y
-     * @param dur
+     * @param time Valor do tempo (time) que ocorreu a fixação.
+     * @param tt Valor do tempo total (tt) da fixação.
+     * @param win Valor da janela (win) da fixação.
+     * @param cursor Valor do campo cursor da fixação.
+     * @param block Valor do campo block da fixação.
+     * @param text Valor do texto (text) da fixação.
+     * @param x Valor do eixo x da fixação.
+     * @param y Valor do eixo y da fixação.
+     * @param dur Valor da duração da fixação.
      */
     public TextFix(Integer time, Integer tt, Integer win, Integer cursor, Integer block, String text, Integer x, Integer y, Integer dur) {
         super(time, tt, win, cursor);
@@ -61,90 +85,90 @@ public class TextFix extends Fix {
     }
 
     /**
-     * Método get da variável block
+     * Método get da variável block.
      *
-     * @return the block
+     * @return Retorna o valor do campo block.
      */
     public Integer getBlock() {
         return block;
     }
 
     /**
-     * Método set da variável block
+     * Método set da variável block.
      *
-     * @param block the block to set
+     * @param block Novo valor do campo block.
      */
     public void setBlock(Integer block) {
         this.block = block;
     }
 
     /**
-     * Método get da variável text
+     * Método get da variável text.
      *
-     * @return the text
+     * @return Retorna o valor do campo text.
      */
     public String getText() {
         return text;
     }
 
     /**
-     * Método set da variável text
+     * Método set da variável text.
      *
-     * @param text the text to set
+     * @param text Novo valor do campo text.
      */
     public void setText(String text) {
         this.text = text;
     }
 
     /**
-     * Método get da variável x
+     * Método get da variável x.
      *
-     * @return the x
+     * @return Retorna o valor do campo x.
      */
     public Integer getX() {
         return x;
     }
 
     /**
-     * Método set da variável x
+     * Método set da variável x.
      *
-     * @param x the x to set
+     * @param x Novo valor do campo x.
      */
     public void setX(Integer x) {
         this.x = x;
     }
 
     /**
-     * Método get da variável y
+     * Método get da variável y.
      *
-     * @return the y
+     * @return Retorna o valor do campo y.
      */
     public Integer getY() {
         return y;
     }
 
     /**
-     * Método set da variável y
+     * Método set da variável y.
      *
-     * @param y the y to set
+     * @param y Novo valor do campo y.
      */
     public void setY(Integer y) {
         this.y = y;
     }
 
     /**
-     * Método get da variável dur
+     * Método get da variável dur.
      *
-     * @return the dur
+     * @return Retorna o valor do campo dur.
      */
     public Integer getDur() {
         return dur;
     }
 
     /**
-     * Método set da variável dur
+     * Método set da variável dur.
      *
-     * @param dur the dur to set
+     * @param dur Novo valor do campo dur.
      */
     public void setDur(Integer dur) {
         this.dur = dur;

@@ -22,7 +22,6 @@ package com.lrsb.xmlElements;
 /**
  * Classe responsável por armazenar ações. As ações de Mouse são o padrão, ações
  * de teclado são armazenadas na classe filha Key.
- *
  * @author gabriel
  */
 public class Action implements XmlEvent {
@@ -33,12 +32,12 @@ public class Action implements XmlEvent {
     protected Integer time;
 
     /**
-     * Cursor
+     * Cursor.
      */
     protected Integer cursor;
 
     /**
-     * Valor da Ação
+     * Valor da Ação.
      */
     protected String value;
 
@@ -50,10 +49,10 @@ public class Action implements XmlEvent {
     /**
      * Construtor da classe Action.
      *
-     * @param time
-     * @param cursor
-     * @param value
-     * @param action
+     * @param time Tempo que ocorreu a ação de tecla.
+     * @param cursor Cursor.
+     * @param value Valor da ação realizada.
+     * @param action Tipo de ação (Mouse ou Key).
      */
     public Action(Integer time, Integer cursor, String value, String action) {
         this.time = time;
@@ -63,9 +62,9 @@ public class Action implements XmlEvent {
     }
 
     /**
-     * Método get da variável time
+     * Método get da variável time.
      *
-     * @return the time
+     * @return Retorna o valor do campo time.
      */
     @Override
     public Integer getTime() {
@@ -73,63 +72,63 @@ public class Action implements XmlEvent {
     }
 
     /**
-     * Método set da variável time
+     * Método set da variável time.
      *
-     * @param time the time to set
+     * @param time Novo valor do campo time.
      */
     public void setTime(Integer time) {
         this.time = time;
     }
 
     /**
-     * Método get da variável cursor
+     * Método get da variável cursor.
      *
-     * @return the cursor
+     * @return Retorna o valor do campo cursor.
      */
     public Integer getCursor() {
         return cursor;
     }
 
     /**
-     * Método set da variável cursor
+     * Método set da variável cursor.
      *
-     * @param cursor the cursor to set
+     * @param cursor Novo valor do campo cursor.
      */
     public void setCursor(Integer cursor) {
         this.cursor = cursor;
     }
 
     /**
-     * Método get da variável value
+     * Método get da variável value.
      *
-     * @return the value
+     * @return Retorna o valor do campo value.
      */
     public String getValue() {
         return value;
     }
 
     /**
-     * Método set da variável value
+     * Método set da variável value.
      *
-     * @param value the value to set
+     * @param value Novo valor do campo value.
      */
     public void setValue(String value) {
         this.value = value;
     }
 
     /**
-     * Método get da variável action
+     * Método get da variável action.
      *
-     * @return the action
+     * @return Retorna o valor do campo action.
      */
     public String getAction() {
         return action;
     }
 
     /**
-     * Método set da variável action
+     * Método set da variável action.
      *
-     * @param action the action to set
+     * @param action Novo valor do campo action.
      */
     public void setAction(String action) {
         this.action = action;

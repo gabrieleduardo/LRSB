@@ -144,11 +144,11 @@ public class Processor {
      */
     public static Document processDocument(XmlDocument xmlDocument, Integer pauseA, Integer pauseB) {
         Document document = new Document();
-        document.setSt(xmlDocument.getSt());
-        document.setStLanguage(xmlDocument.getStLanguage());
+        document.setSourceText(xmlDocument.getSourceText());
+        document.setSourceLanguage(xmlDocument.getSourceLanguage());
         document.setSubject(xmlDocument.getSubject());
         document.setTask(xmlDocument.getTask());
-        document.setTtLanguage(xmlDocument.getTtLanguage());
+        document.setTargetLanguage(xmlDocument.getTargetLanguage());
         getMicroUnits(xmlDocument, document, pauseA, pauseB);
         return document;
     }
@@ -156,7 +156,7 @@ public class Processor {
     private static void getMicroUnits(XmlDocument xmlDocument, Document document, Integer pauseBegin, Integer pauseEnd) {
         // Polimorfismo para conseguir todos os Eventos em ordem
         ArrayList<XmlEvent> eventList = new ArrayList<>();
-        eventList.addAll(xmlDocument.getFixList());
+        eventList.addAll(xmlDocument.getFixationList());
         eventList.addAll(xmlDocument.getActionList());
         sortEventList(eventList);
         // Variaveis
@@ -259,8 +259,8 @@ public class Processor {
 
                     saccade += (saccade.isEmpty() ? "" : "+") + format2f(distance);
                     saccadePause += (saccadePause.isEmpty() ? "" : "+") + format2f(distance);
-                    saccadeAngle += (saccadeAngle.isEmpty() ? "" : "+") + format2f(Vector.getAngle(previousX, previousY, textFix.getX(), textFix.getY()));
-                    saccadeAnglePause += (saccadeAnglePause.isEmpty() ? "" : "+") + format2f(Vector.getAngle(previousX, previousY, textFix.getX(), textFix.getY()));
+                    saccadeAngle += (saccadeAngle.isEmpty() ? "" : "+") + format2f(getAngle(previousX, previousY, textFix.getX(), textFix.getY()));
+                    saccadeAnglePause += (saccadeAnglePause.isEmpty() ? "" : "+") + format2f(getAngle(previousX, previousY, textFix.getX(), textFix.getY()));
                 }
 
                 previousX = textFix.getX();
@@ -282,7 +282,7 @@ public class Processor {
                 segment.setPause(previousPause);
                 segment.setEnd(finalTime);
                 segment.setDurationM(finalTime - initialTime);
-                segment.setLinearRep(linearRepresentation);
+                segment.setLinearRepresentation(linearRepresentation);
                 segment.setFixCountS(fixCountS);
                 segment.setFixCountT(fixCountT);
                 segment.setFixDurationS(fixDurationS);
@@ -446,4 +446,36 @@ public class Processor {
     private static boolean isSaccade(Integer previousX, Integer previousY, TextFix textFix) {
         return previousX != null && previousY != null && textFix.getX() != null && textFix.getY() != null;
     }
+    
+    /**
+     * Realizar o cálculo do ângulo entre duas posições. Para isso são recebidas
+     * as coordenadas x,y para duas fixações diferentes. Considera-se que o ângulo
+     * é calculado sobre dois vetores, para isso são considerados dois vetores 
+     * partindo da posição (0,0) até a posição de cada fixação respectivamente.
+     * 
+     * Como a posição de inicio do vetor é fixa como (0,0) foi realizada uma
+     * simplificação do cálculo matemático para:
+     * 
+     *  Acos(((x1 * x2) - (y1 * y2)) / (sqrt((x1^2)+(y1^2)) * sqrt((x2^2)+(y2^2)))) * (180/pi).
+     * 
+     * Código baseado no original disponibilizado em: https://github.com/utluiz/java-playground/blob/master/random-code/src/main/java/br/com/starcode/angulovetores/AnguloVetores.java
+     * 
+     * @param fixationAx Valor da coordenada x para criação do primeiro vetor.
+     * @param fixationAy Valor da coordenada y para criação do primeiro vetor.
+     * @param fixationBx Valor da coordenada x para criação do segundo vetor.
+     * @param fixationBy Valor da coordenada y para criação do segundo vetor.
+     * @return Valor do ângulo calculado entre os dois vetores.
+     */
+    private static Double getAngle(Integer fixationAx, Integer fixationAy, Integer fixationBx, Integer fixationBy){
+        return 
+            Math.acos(
+                (
+                    (fixationAx * fixationBx) + (fixationAy * fixationBy)
+                ) / 
+                (
+                    Math.sqrt(Math.pow(fixationAx, 2.0) + Math.pow(fixationAy, 2.0)) 
+                    * Math.sqrt(Math.pow(fixationBx, 2.0) + Math.pow(fixationBy, 2.0))
+                )
+            ) * (180 / Math.PI);
+    };
 }

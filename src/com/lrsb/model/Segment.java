@@ -29,7 +29,7 @@ import static com.lrsb.model.StringTreatment.*;
 public class Segment {
 
     private Integer microUnitId;
-    private String linearRep;
+    private String linearRepresentation;
     private Integer pause;
     private Integer start;
     private Integer end;
@@ -66,519 +66,587 @@ public class Segment {
     private Integer del;
 
     /**
-     *
-     * @return
+     * Método get do campo saccadeAnglePause.
+     * @return Retorna o valor do campo saccadeAnglePause.
      */
     public String getSaccadeAnglePause() {
         return saccadeAnglePause;
     }
 
     /**
-     *
-     * @param saccadeAnglePause
+     * Método set do campo saccadeAnglePause.
+     * @param saccadeAnglePause Novo valor para o campo saccadeAnglePause.
      */
     public void setSaccadeAnglePause(String saccadeAnglePause) {
         this.saccadeAnglePause = saccadeAnglePause;
     }
 
     /**
-     * @return the microUnitId
+     * Método get do campo microUnitId.
+     * @return Retorna o valor do campo microUnitId.
      */
     public Integer getMicroUnitId() {
         return microUnitId;
     }
 
     /**
-     * @param microUnitId the microUnitId to set
+     * Método set do campo microUnitId.
+     * @param microUnitId Novo valor para o campo microUnitId.
      */
     public void setMicroUnitId(Integer microUnitId) {
         this.microUnitId = microUnitId;
     }
 
     /**
-     * @return the linearRep
+     * Método get do campo linearRepresentation.
+     * @return Retorna o valor do campo linearRepresentation.
      */
-    public String getLinearRep() {
-        return linearRep;
+    public String getLinearRepresentation() {
+        return linearRepresentation;
     }
 
     /**
-     * @param linearRep the linearRep to set
+     * Método set do campo linearRepresentation.
+     * @param linearRepresentation Novo valor para o campo linearRepresentation.
      */
-    public void setLinearRep(String linearRep) {
-        this.linearRep = linearRep;
+    public void setLinearRepresentation(String linearRepresentation) {
+        this.linearRepresentation = linearRepresentation;
     }
 
     /**
-     * @return the pause
+     * Método get do campo pause.
+     * @return Retorna o valor do campo pause.
      */
     public Integer getPause() {
         return pause;
     }
 
     /**
-     * @param pause the pause to set
+     * Método set do campo pause.
+     * @param pause Novo valor para o campo pause.
      */
     public void setPause(Integer pause) {
         this.pause = pause;
     }
 
     /**
-     * @return the start
+     * Método get do campo start.
+     * @return Retorna o valor do campo start.
      */
     public Integer getStart() {
         return start;
     }
 
     /**
-     * @param start the start to set
+     * Método set do campo start.
+     * @param start Novo valor para o campo start.
      */
     public void setStart(Integer start) {
         this.start = start;
     }
 
     /**
-     * @return the end
+     * Método get do campo end.
+     * @return Retorna o valor do campo end.
      */
     public Integer getEnd() {
         return end;
     }
 
     /**
-     * @param end the end to set
+     * Método set do campo end.
+     * @param end Novo valor para o campo end.
      */
     public void setEnd(Integer end) {
         this.end = end;
     }
 
     /**
-     * @return the durationM
+     * Método get do campo durationM.
+     * @return Retorna o valor do campo durationM.
      */
     public Integer getDurationM() {
         return durationM;
     }
 
     /**
-     * @param durationM the durationM to set
+     * Método set do campo durationM.
+     * @param durationM Novo valor para o campo durationM.
      */
     public void setDurationM(Integer durationM) {
         this.durationM = durationM;
     }
 
     /**
-     * @return the fixCountS
+     * Método get do campo fixCountS.
+     * @return Retorna o valor do campo fixCountS.
      */
     public Integer getFixCountS() {
         return fixCountS;
     }
 
     /**
-     * @param fixCountS the fixCountS to set
+     * Método set do campo fixCountS.
+     * @param fixCountS Novo valor para o campo fixCountS.
      */
     public void setFixCountS(Integer fixCountS) {
         this.fixCountS = fixCountS;
     }
 
     /**
-     * @return the fixDurationS
+     * Método get do campo fixDurationS.
+     * @return Retorna o valor do campo fixDurationS.
      */
     public Integer getFixDurationS() {
         return fixDurationS;
     }
 
     /**
-     * @param fixDurationS the fixDurationS to set
+     * Método set do campo fixDurationS.
+     * @param fixDurationS Novo valor para o campo fixDurationS.
      */
     public void setFixDurationS(Integer fixDurationS) {
         this.fixDurationS = fixDurationS;
     }
 
     /**
-     * @return the fixCountT
+     * Método get do campo fixCountT.
+     * @return Retorna o valor do campo fixCountT.
      */
     public Integer getFixCountT() {
         return fixCountT;
     }
 
     /**
-     * @param fixCountT the fixCountT to set
+     * Método set do campo fixCountT.
+     * @param fixCountT Novo valor para o campo fixCountT.
      */
     public void setFixCountT(Integer fixCountT) {
         this.fixCountT = fixCountT;
     }
 
     /**
-     * @return the fixDurationT
+     * Método get do campo fixDurationT.
+     * @return Retorna o valor do campo fixDurationT.
      */
     public Integer getFixDurationT() {
         return fixDurationT;
     }
 
     /**
-     * @param fixDurationT the fixDurationT to set
+     * Método set do campo fixDurationT.
+     * @param fixDurationT Novo valor para o campo fixDurationT.
      */
     public void setFixDurationT(Integer fixDurationT) {
         this.fixDurationT = fixDurationT;
     }
 
     /**
-     * @return the meanDurationT
+     * Método get do campo meanDurationT.
+     * @return Retorna o valor do campo meanDurationT.
      */
     public Double getMeanDurationT() {
         return meanDurationT;
     }
 
     /**
-     * @param meanDurationT the meanDurationT to set
+     * Método set do campo meanDurationT.
+     * @param meanDurationT Novo valor para o campo meanDurationT.
      */
     public void setMeanDurationT(Double meanDurationT) {
         this.meanDurationT = meanDurationT;
     }
 
     /**
-     * @return the fixCountST
+     * Método get do campo fixCountST.
+     * @return Retorna o valor do campo fixCountST.
      */
     public Integer getFixCountST() {
         return fixCountST;
     }
 
     /**
-     * @param fixCountST the fixCountST to set
+     * Método set do campo fixCountST.
+     * @param fixCountST Novo valor para o campo fixCountST.
      */
     public void setFixCountST(Integer fixCountST) {
         this.fixCountST = fixCountST;
     }
 
     /**
-     * @return the fixDurationST
+     * Método get do campo fixDurationST.
+     * @return tRetorna o valor do campo fixDurationST.
      */
     public Integer getFixDurationST() {
         return fixDurationST;
     }
 
     /**
-     * @param fixDurationST the fixDurationST to set
+     * Método set do campo fixDurationST.
+     * @param fixDurationST Novo valor para o campo fixDurationST.
      */
     public void setFixDurationST(Integer fixDurationST) {
         this.fixDurationST = fixDurationST;
     }
 
     /**
-     * @return the fixCountSPause
+     * Método get do campo fixCountSPause.
+     * @return Retorna o valor do campo fixCountSPause.
      */
     public Integer getFixCountSPause() {
         return fixCountSPause;
     }
 
     /**
-     * @param fixCountSPause the fixCountSPause to set
+     * Método set do campo fixCountSPause.
+     * @param fixCountSPause Novo valor para o campo fixCountSPause.
      */
     public void setFixCountSPause(Integer fixCountSPause) {
         this.fixCountSPause = fixCountSPause;
     }
 
     /**
-     * @return the fixDurationSPause
+     * Método get do campo fixDurationSPause.
+     * @return Retorna o valor do campo fixDurationSPause.
      */
     public Integer getFixDurationSPause() {
         return fixDurationSPause;
     }
 
     /**
-     * @param fixDurationSPause the fixDurationSPause to set
+     * Método set do campo fixDurationSPause.
+     * @param fixDurationSPause Novo valor para o campo fixDurationSPause.
      */
     public void setFixDurationSPause(Integer fixDurationSPause) {
         this.fixDurationSPause = fixDurationSPause;
     }
 
     /**
-     * @return the meanDurationSPause
+     * Método get do campo meanDurationSPause.
+     * @return Retorna o valor do campo meanDurationSPause.
      */
     public Double getMeanDurationSPause() {
         return meanDurationSPause;
     }
 
     /**
-     * @param meanDurationSPause the meanDurationSPause to set
+     * Método set do campo meanDurationSPause.
+     * @param meanDurationSPause Novo valor para o campo meanDurationSPause.
      */
     public void setMeanDurationSPause(Double meanDurationSPause) {
         this.meanDurationSPause = meanDurationSPause;
     }
 
     /**
-     * @return the fixCountTPause
+     * Método get do campo fixCountTPause.
+     * @return Retorna o valor do campo fixCountTPause.
      */
     public Integer getFixCountTPause() {
         return fixCountTPause;
     }
 
     /**
-     * @param fixCountTPause the fixCountTPause to set
+     * Método set do campo fixCountTPause.
+     * @param fixCountTPause Novo valor para o campo fixCountTPause.
      */
     public void setFixCountTPause(Integer fixCountTPause) {
         this.fixCountTPause = fixCountTPause;
     }
 
     /**
-     * @return the fixDurationTPause
+     * Método get do campo fixDurationTPause.
+     * @return Retorna o valor do campo fixDurationTPause.
      */
     public Integer getFixDurationTPause() {
         return fixDurationTPause;
     }
 
     /**
-     * @param fixDurationTPause the fixDurationTPause to set
+     * Método set do campo fixDurationTPause.
+     * @param fixDurationTPause Novo valor para o campo fixDurationTPause.
      */
     public void setFixDurationTPause(Integer fixDurationTPause) {
         this.fixDurationTPause = fixDurationTPause;
     }
 
     /**
-     * @return the meanDurationTPause
+     * Método get do campo meanDurationTPause.
+     * @return Retorna o valor do campo meanDurationTPause.
      */
     public Double getMeanDurationTPause() {
         return meanDurationTPause;
     }
 
     /**
-     * @param meanDurationTPause the meanDurationTPause to set
+     * Método set do campo meanDurationTPause.
+     * @param meanDurationTPause Novo valor para o campo meanDurationTPause.
      */
     public void setMeanDurationTPause(Double meanDurationTPause) {
         this.meanDurationTPause = meanDurationTPause;
     }
 
     /**
-     * @return the fixCountSTPause
+     * Método get do campo fixCountSTPause.
+     * @return Retorna o valor do campo fixCountSTPause.
      */
     public Integer getFixCountSTPause() {
         return fixCountSTPause;
     }
 
     /**
-     * @param fixCountSTPause the fixCountSTPause to set
+     * Método set do campo fixCountSTPause.
+     * @param fixCountSTPause Novo valor para o campo fixCountSTPause.
      */
     public void setFixCountSTPause(Integer fixCountSTPause) {
         this.fixCountSTPause = fixCountSTPause;
     }
 
     /**
-     * @return the fixDurationSTPause
+     * Método get do campo fixDurationSTPause.
+     * @return Retorna o valor do campo fixDurationSTPause.
      */
     public Integer getFixDurationSTPause() {
         return fixDurationSTPause;
     }
 
     /**
-     * @param fixDurationSTPause the fixDurationSTPause to set
+     * Método set do campo fixDurationSTPause.
+     * @param fixDurationSTPause Novo valor para o campo fixDurationSTPause.
      */
     public void setFixDurationSTPause(Integer fixDurationSTPause) {
         this.fixDurationSTPause = fixDurationSTPause;
     }
 
     /**
-     * @return the meanDurationSTPause
+     * Método get do campo meanDurationSTPause.
+     * @return Retorna o valor do campo meanDurationSTPause.
      */
     public Double getMeanDurationSTPause() {
         return meanDurationSTPause;
     }
 
     /**
-     * @param meanDurationSTPause the meanDurationSTPause to set
+     * Método set do campo meanDurationSTPause.
+     * @param meanDurationSTPause Novo valor para o campo meanDurationSTPause.
      */
     public void setMeanDurationSTPause(Double meanDurationSTPause) {
         this.meanDurationSTPause = meanDurationSTPause;
     }
 
     /**
-     * @return the visits
+     * Método get do campo visits.
+     * @return Retorna o valor do campo visits.
      */
     public Integer getVisits() {
         return visits;
     }
 
     /**
-     * @param visits the visits to set
+     * Método set do campo visits.
+     * @param visits Novo valor para o campo visits.
      */
     public void setVisits(Integer visits) {
         this.visits = visits;
     }
 
     /**
-     * @return the visitsPause
+     * Método get do campo visitsPause.
+     * @return Retorna o valor do campo visitsPause.
      */
     public Integer getVisitsPause() {
         return visitsPause;
     }
 
     /**
-     * @param visitsPause the visitsPause to set
+     * Método set do campo visitsPause.
+     * @param visitsPause Novo valor para o campo visitsPause.
      */
     public void setVisitsPause(Integer visitsPause) {
         this.visitsPause = visitsPause;
     }
 
     /**
-     * @return the saccade
+     * Método get do campo saccade.
+     * @return Retorna o valor do campo saccade.
      */
     public String getSaccade() {
         return saccade;
     }
 
     /**
-     * @param saccade the saccade to set
+     * Método set do campo saccade.
+     * @param saccade Novo valor para o campo saccade.
      */
     public void setSaccade(String saccade) {
         this.saccade = saccade;
     }
 
     /**
-     * @return the sacaddeAngle
+     * Método get do campo sacaddeAngle.
+     * @return Retorna o valor do campo sacaddeAngle.
      */
     public String getSacaddeAngle() {
         return sacaddeAngle;
     }
 
     /**
-     * @param sacaddeAngle the sacaddeAngle to set
+     * Método set do campo sacaddeAngle.
+     * @param sacaddeAngle Novo valor para o campo sacaddeAngle.
      */
     public void setSacaddeAngle(String sacaddeAngle) {
         this.sacaddeAngle = sacaddeAngle;
     }
 
     /**
-     * @return the saccadeSum
+     * Método get do campo saccadeSum.
+     * @return Retorna o valor do campo saccadeSum.
      */
     public Double getSaccadeSum() {
         return saccadeSum;
     }
 
     /**
-     * @param saccadeSum the saccadeSum to set
+     * Método set do campo saccadeSum.
+     * @param saccadeSum Novo valor para o campo saccadeSum.
      */
     public void setSaccadeSum(Double saccadeSum) {
         this.saccadeSum = saccadeSum;
     }
 
     /**
-     * @return the saccadeMean
+     * Método get do campo saccadeMean.
+     * @return Retorna o valor do campo saccadeMean.
      */
     public Double getSaccadeMean() {
         return saccadeMean;
     }
 
     /**
-     * @param saccadeMean the saccadeMean to set
+     * Método set do campo saccadeMean.
+     * @param saccadeMean Novo valor para o campo saccadeMean.
      */
     public void setSaccadeMean(Double saccadeMean) {
         this.saccadeMean = saccadeMean;
     }
 
     /**
-     * @return the saccadePause
+     * Método get do campo saccadePause.
+     * @return Retorna o valor do campo saccadePause.
      */
     public String getSaccadePause() {
         return saccadePause;
     }
 
     /**
-     * @param saccadePause the saccadePause to set
+     * Método set do campo saccadePause.
+     * @param saccadePause Novo valor para o campo saccadePause.
      */
     public void setSaccadePause(String saccadePause) {
         this.saccadePause = saccadePause;
     }
 
     /**
-     * @return the saccadeSumPause
+     * Método get do campo saccadeSumPause.
+     * @return Retorna o valor do campo saccadeSumPause.
      */
     public Double getSaccadeSumPause() {
         return saccadeSumPause;
     }
 
     /**
-     * @param saccadeSumPause the saccadeSumPause to set
+     * Método set do campo saccadeSumPause.
+     * @param saccadeSumPause Novo valor para o campo saccadeSumPause.
      */
     public void setSaccadeSumPause(Double saccadeSumPause) {
         this.saccadeSumPause = saccadeSumPause;
     }
 
     /**
-     * @return the saccadeMeanPause
+     * Método get do campo saccadeMeanPause.
+     * @return Retorna o valor do campo saccadeMeanPause.
      */
     public Double getSaccadeMeanPause() {
         return saccadeMeanPause;
     }
 
     /**
-     * @param saccadeMeanPause the saccadeMeanPause to set
+     * Método set do campo saccadeMeanPause.
+     * @param saccadeMeanPause Novo valor para o campo saccadeMeanPause.
      */
     public void setSaccadeMeanPause(Double saccadeMeanPause) {
         this.saccadeMeanPause = saccadeMeanPause;
     }
 
     /**
-     * @return the ins
+     * Método get do campo ins.
+     * @return Retorna o valor do campo ins.
      */
     public Integer getIns() {
         return ins;
     }
 
     /**
-     * @param ins the ins to set
+     * Método set do campo ins.
+     * @param ins Novo valor para o campo ins.
      */
     public void setIns(Integer ins) {
         this.ins = ins;
     }
 
     /**
-     * @return the del
+     * Método get do campo del.
+     * @return Retorna o valor do campo del.
      */
     public Integer getDel() {
         return del;
     }
 
     /**
-     * @param del the del to set
+     * Método set do campo del.
+     * @param del Novo valor para o campo del.
      */
     public void setDel(Integer del) {
         this.del = del;
     }
 
     /**
-     *
-     * @return
+     * Método get do campo meanDurationS.
+     * @return Retorna o valor do campo meanDurationS.
      */
     public Double getMeanDurationS() {
         return meanDurationS;
     }
 
     /**
-     *
-     * @param meanDurationS
+     * Método set do campo meanDurationS.
+     * @param meanDurationS Novo valor para o campo meanDurationS.
      */
     public void setMeanDurationS(Double meanDurationS) {
         this.meanDurationS = meanDurationS;
     }
 
     /**
-     *
-     * @return
+     * Método get do campo meanDurationST.
+     * @return Retorna o valor do campo meanDurationST.
      */
     public Double getMeanDurationST() {
         return meanDurationST;
     }
 
     /**
-     *
-     * @param meanDurationST
+     * Método set do campo meanDurationST.
+     * @param meanDurationST Novo valor para o campo meanDurationST.
      */
     public void setMeanDurationST(Double meanDurationST) {
         this.meanDurationST = meanDurationST;
     }
 
+    /**
+     * Prepara as informações do segmento para o formato de linha do arquivo CSV.
+     * @return Segmento formatado como linha do arquivo CSV.
+     */
     public String segmentToCSV() {
-        String str;
-
-        str = microUnitId + "," + "\"" + replaceSpaces(linearRep) + "\"" + "," + pause + "," + start + "," + end
+        return microUnitId + "," + "\"" + replaceSpaces(linearRepresentation) + "\"" + "," + pause + "," + start + "," + end
                 + "," + durationM + "," + fixCountS + "," + fixDurationS
                 + "," + format2f(meanDurationS) + "," + fixCountT + "," + fixDurationT + "," + format2f(meanDurationT)
                 + "," + fixCountST + "," + fixDurationST + "," + format2f(meanDurationST) + "," + fixCountSPause
@@ -588,7 +656,5 @@ public class Segment {
                 + "," + saccade + "," + sacaddeAngle + "," + format2f(saccadeSum) + "," + format2f(saccadeMean)
                 + "," + saccadePause + "," + saccadeAnglePause + "," + format2f(saccadeSumPause)
                 + "," + format2f(saccadeMeanPause) + "," + ins + "," + del + "\n";
-
-        return str;
     }
 }

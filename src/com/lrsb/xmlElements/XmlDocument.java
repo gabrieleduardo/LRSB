@@ -22,159 +22,193 @@ package com.lrsb.xmlElements;
 import java.util.ArrayList;
 
 /**
- *
+ * Classe responsável por armazenar as informaçõe do documento XML processado.
  * @author gabriel
  */
 public class XmlDocument {
-
+    /**
+     * Assunto do documento processado.
+     */
     private String subject;
+    
+    /**
+     * Tarefa realizada no documento processado. As tarefas podem ser de 
+     * pós-edição (post-editing) ou tradução (translation).
+     */
     private String task;
-    private String st;
-    private String stLanguage;
-    private String ttLanguage;
-    private Integer finalTime;
-    private ArrayList<Fix> fixList = new ArrayList<>();
+    
+    /**
+     * Documento fonte.
+     */
+    
+    private String sourceText;
+    
+    /**
+     * Idioma do documento fonte.
+     */
+    private String sourceLanguage;
+    
+    /**
+     * Idioma do documento alvo.
+     */
+    private String targetLanguage;
+    
+    /**
+     * Tempo decorrido ao término da tarefa.
+     */
+    private Integer stopTime;
+    
+    /**
+     * Lista com as fixações do documento processado.
+     */
+    
+    private ArrayList<Fix> fixationList = new ArrayList<>();
+    
+    /**
+     * Lista com as ações do documento processado.
+     */
     private ArrayList<Action> actionList = new ArrayList<>();
 
     /**
-     * Método get da variável subject
+     * Método get da variável subject.
      *
-     * @return the subject
+     * @return Retorna o valor do campo subject.
      */
     public String getSubject() {
         return subject;
     }
 
     /**
-     * Método set da variável subject
+     * Método set da variável subject.
      *
-     * @param subject the subject to set
+     * @param subject Novo valor para o campo subject.
      */
     public void setSubject(String subject) {
         this.subject = subject;
     }
 
     /**
-     * Método get da variável task
+     * Método get da variável task.
      *
-     * @return the task
+     * @return Retorna o valor do campo task.
      */
     public String getTask() {
         return task;
     }
 
     /**
-     * Método set da variável task
+     * Método set da variável task.
      *
-     * @param task the task to set
+     * @param task Novo valor para o campo task.
      */
     public void setTask(String task) {
         this.task = task;
     }
 
     /**
-     * Método get da variável st
+     * Método get da variável sourceText.
      *
-     * @return the st
+     * @return Retorna o valor do campo sourceText.
      */
-    public String getSt() {
-        return st;
+    public String getSourceText() {
+        return sourceText;
     }
 
     /**
-     * Método set da variável st
+     * Método set da variável sourceText.
      *
-     * @param st the st to set
+     * @param sourceText Novo valor para o campo sourceText.
      */
-    public void setSt(String st) {
-        this.st = st;
+    public void setSourceText(String sourceText) {
+        this.sourceText = sourceText;
     }
 
     /**
-     * Método get da variável STlanguage
+     * Método get da variável STlanguage.
      *
-     * @return the stLanguage
+     * @return Retorna o valor do campo sourceLanguage.
      */
-    public String getStLanguage() {
-        return stLanguage;
+    public String getSourceLanguage() {
+        return sourceLanguage;
     }
 
     /**
-     * Método set da variável STlanguage
+     * Método set da variável STlanguage.
      *
-     * @param stLanguage the stLanguage to set
+     * @param sourceLanguage Novo valor para o campo sourceLanguage.
      */
-    public void setStLanguage(String stLanguage) {
-        this.stLanguage = stLanguage;
+    public void setSourceLanguage(String sourceLanguage) {
+        this.sourceLanguage = sourceLanguage;
     }
 
     /**
-     * Método get da variável TTlanguage
+     * Método get da variável TTlanguage.
      *
-     * @return the ttLanguage
+     * @return Retorna o valor do campo targetLanguage.
      */
-    public String getTtLanguage() {
-        return ttLanguage;
+    public String getTargetLanguage() {
+        return targetLanguage;
     }
 
     /**
-     * Método set da variável TTlanguage
+     * Método set da variável TTlanguage.
      *
-     * @param ttLanguage the ttLanguage to set
+     * @param targetLanguage Novo valor para o campo targetLanguage.
      */
-    public void setTtLanguage(String ttLanguage) {
-        this.ttLanguage = ttLanguage;
+    public void setTargetLanguage(String targetLanguage) {
+        this.targetLanguage = targetLanguage;
     }
 
     /**
-     * Método get da variável finalTime
+     * Método get da variável stopTime.
      *
-     * @return the finalTime
+     * @return Retorna o valor do campo stopTime.
      */
-    public Integer getFinalTime() {
-        return finalTime;
+    public Integer getStopTime() {
+        return stopTime;
     }
 
     /**
-     * Método set da variável finalTime
+     * Método set da variável stopTime.
      *
-     * @param finalTime the finalTime to set
+     * @param stopTime Novo valor para o campo stopTime.
      */
-    public void setFinalTime(Integer finalTime) {
-        this.finalTime = finalTime;
+    public void setStopTime(Integer stopTime) {
+        this.stopTime = stopTime;
     }
 
     /**
-     * Método get da lista fixList
+     * Método get da lista fixationList.
      *
-     * @return the fixList
+     * @return Retorna um array com objetos Fix.
      */
-    public ArrayList<Fix> getFixList() {
-        return fixList;
+    public ArrayList<Fix> getFixationList() {
+        return fixationList;
     }
 
     /**
-     * Método set da lista fixList
+     * Método set da lista fixationList.
      *
-     * @param fixList the fixList to set
+     * @param fixationList Novo array com objetiso do tipo Fix para o campo fixationList.
      */
-    private void setFixList(ArrayList<Fix> fixList) {
-        this.fixList = fixList;
+    private void setFixationList(ArrayList<Fix> fixationList) {
+        this.fixationList = fixationList;
     }
 
     /**
-     * Método get da lista actionList
+     * Método get da lista actionList.
      *
-     * @return the actionList
+     * @return Retorna um array com objetos Action.
      */
     public ArrayList<Action> getActionList() {
         return actionList;
     }
 
     /**
-     * Método set da variável actionList
+     * Método set da variável actionList.
      *
-     * @param actionList the actionList to set
+     * @param actionList Novo array com objetiso do tipo Action para o campo 
+     * actionList.
      */
     private void setActionList(ArrayList<Action> actionList) {
         this.actionList = actionList;

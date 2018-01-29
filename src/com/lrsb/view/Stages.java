@@ -33,7 +33,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 /**
- *
+ * Classe responsável por armazenar os stages.
  * @author gabriel
  */
 public class Stages {
@@ -103,7 +103,6 @@ public class Stages {
             Logger.getLogger(Stages.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
     
     public void showTutorialStage(){
         browserStage.setScene(tutorialScene);

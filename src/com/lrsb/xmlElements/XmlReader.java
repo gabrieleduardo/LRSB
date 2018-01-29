@@ -38,16 +38,16 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 /**
- * Requisitos Funcionais: RF04,RF05,RF06,RF07
+ * Requisitos Funcionais: RF04,RF05,RF06,RF07.
  *
- * Classe responsável pela leitura do arquivo xml
+ * Classe responsável pela leitura do arquivo xml.
  *
  * @author gabriel
  */
 public class XmlReader {
 
     /**
-     * Expressão xpath responsável pela leitura do campo Languages
+     * Expressão xpath responsável pela leitura do campo Languages.
      */
     private static final String LANGUAGES = "//Languages";
 
@@ -64,12 +64,12 @@ public class XmlReader {
     private static final String SUBJECT = "//Subject";
 
     /**
-     * Expressão xpath responsável pela leitura do campo Key
+     * Expressão xpath responsável pela leitura do campo Key.
      */
     private static final String KEY = "//Key";
 
     /**
-     * Expressão xpath responsável pela leitura do campo mouse
+     * Expressão xpath responsável pela leitura do campo mouse.
      */
     private static final String MOUSE = "//Mouse";
 
@@ -80,7 +80,7 @@ public class XmlReader {
     private static final String FIXATION = "//Fix[@Win='1' or @Win='2']";
 
     /**
-     * Expressão xpath responsável pela leitura do tempo final da atividade
+     * Expressão xpath responsável pela leitura do tempo final da atividade.
      */
     private static final String FINAL_TIME = "//System[@Value='STOP']";
     
@@ -90,7 +90,7 @@ public class XmlReader {
     private static final String ENCODE = System.getProperty("file.encoding");
 
     /**
-     * Requisitos Funcionais: RF04,RF05,RF06,RF07
+     * Requisitos Funcionais: RF04,RF05,RF06,RF07.
      *
      * Método responsável pela leitura do arquivo .xml É o único método público
      * da classe.
@@ -124,17 +124,18 @@ public class XmlReader {
              * sequêncial garante um desempenho superior a busca dos nodes no
              * xpath.
              */
+                        
             while (bufferedReader.ready()) {
                 textLine = bufferedReader.readLine();
 
                 if (textLine.contains("<Fix")) {
-                    xmlDocument.getFixList().add(parseFixation(textLine));
+                    xmlDocument.getFixationList().add(parseFixation(textLine));
                 } else if (textLine.contains("<Key Time")) {
                     xmlDocument.getActionList().add(parseKey(textLine));
                 } else if (textLine.contains("<Mouse")) {
                     xmlDocument.getActionList().add(parseMouse(textLine));
                 } else if (textLine.contains("<System") && textLine.contains("STOP")) {
-                    xmlDocument.setFinalTime(parseFinalTime(textLine));
+                    xmlDocument.setStopTime(parseFinalTime(textLine));
                 } else if (textLine.contains("<Subject")) {
                     xmlDocument.setSubject(parseSubject(textLine));
                 } else if (textLine.contains("<SourceTextUTF8>")) {
@@ -151,7 +152,7 @@ public class XmlReader {
                         }
                     }
 
-                    xmlDocument.setSt(parseSourceText(textLine));
+                    xmlDocument.setSourceText(parseSourceText(textLine));
 
                 } else if (textLine.contains("<Languages")) {
                     
@@ -159,8 +160,8 @@ public class XmlReader {
 
                     textLine = StringTreatment.replaceLanguage(textLine);
                     String[] translationLanguages = parseElement(textLine);
-                    xmlDocument.setStLanguage(translationLanguages[0]);
-                    xmlDocument.setTtLanguage(translationLanguages[1]);
+                    xmlDocument.setSourceLanguage(translationLanguages[0]);
+                    xmlDocument.setTargetLanguage(translationLanguages[1]);
 
                     /**
                      * RF 06 – Caso o campo task esteja vazio a aplicação deve
@@ -300,7 +301,7 @@ public class XmlReader {
      * Realiza o parse do tempo final da tarefa por xpath.
      *
      * @param text String com o tempo final a ser processada.
-     * @return Tempo final da tarefa..
+     * @return Tempo final da tarefa.
      * @throws Exception
      */
     private static Integer parseFinalTime(String text) throws Exception {
@@ -311,7 +312,7 @@ public class XmlReader {
     }
 
     /**
-     * Requisitos funcionáis: RF04,RF05
+     * Requisitos funcionáis: RF04,RF05.
      *
      * Realiza o parse do subject por xpath.
      *
@@ -343,7 +344,7 @@ public class XmlReader {
     }
 
     /**
-     * Requisitos Funcionais: RF04,RF06
+     * Requisitos Funcionais: RF04,RF06.
      *
      * Realiza o parse do campo Languages por xpath.
      *

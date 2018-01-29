@@ -30,92 +30,128 @@ import java.util.ArrayList;
  */
 public class Document {
 
+    /**
+     * Assunto do documento.
+     */
     private String subject;
+    
+    /**
+     * Tarefa realizada no documento. As tarefas podem ser de 
+     * pós-edição (post-editing) ou tradução (translation).
+     */
     private String task;
-    private String st;
-    private String stLanguage;
-    private String ttLanguage;
+    
+    /**
+     * Documento fonte.
+     */
+    private String sourceText;
+    
+    /**
+     * Idioma do documento fonte.
+     */
+    private String sourceLanguage;
+    
+    /**
+     * Idioma do documento alvo.
+     */
+    private String targetLanguage;
+    
+    /**
+     * Lista de segmentos do documento.
+     */
     private ArrayList<Segment> segments = new ArrayList<>();
 
     /**
-     * @return the subject
+     * Método get do campo subject.
+     * @return Retorna o valor do campo subject.
      */
     public String getSubject() {
         return subject;
     }
 
     /**
-     * @param subject the subject to set
+     * Método set do campo subject.
+     * @param subject Novo valor para o campo subject.
      */
     public void setSubject(String subject) {
         this.subject = subject;
     }
 
     /**
-     * @return the task
+     * Método get do campo task.
+     * @return Retorna o valor do campo task.
      */
     public String getTask() {
         return task;
     }
 
     /**
-     * @param task the task to set
+     * Método set do campo task.
+     * @param task Novo valor para o campo task.
      */
     public void setTask(String task) {
         this.task = task;
     }
 
     /**
-     * @return the st
+     * Método get do campo sourceText.
+     * @return Retorna o valor do campo sourceText.
      */
-    public String getSt() {
-        return st;
+    public String getSourceText() {
+        return sourceText;
     }
 
     /**
-     * @param st the st to set
+     * Método set do campo sourceText.
+     * @param sourceText Novo valor para o campo sourceText.
      */
-    public void setSt(String st) {
-        this.st = st;
+    public void setSourceText(String sourceText) {
+        this.sourceText = sourceText;
     }
 
     /**
-     * @return the stLanguage
+     * Método get do campo sourceLanguage.
+     * @return Retorna o valor do campo sourceLanguage.
      */
-    public String getStLanguage() {
-        return stLanguage;
+    public String getSourceLanguage() {
+        return sourceLanguage;
     }
 
     /**
-     * @param stLanguage the stLanguage to set
+     * Método set do campo sourceLanguage.
+     * @param sourceLanguage Novo valor para o campo sourceLanguage.
      */
-    public void setStLanguage(String stLanguage) {
-        this.stLanguage = stLanguage;
+    public void setSourceLanguage(String sourceLanguage) {
+        this.sourceLanguage = sourceLanguage;
     }
 
     /**
-     * @return the ttLanguage
+     * Método get do campo targetLanguage.
+     * @return Retorna o valor do campo targetLanguage.
      */
-    public String getTtLanguage() {
-        return ttLanguage;
+    public String getTargetLanguage() {
+        return targetLanguage;
     }
 
     /**
-     * @param ttLanguage the ttLanguage to set
+     * Método set do campo targetLanguage.
+     * @param targetLanguage Novo valor para o campo targetLanguage.
      */
-    public void setTtLanguage(String ttLanguage) {
-        this.ttLanguage = ttLanguage;
+    public void setTargetLanguage(String targetLanguage) {
+        this.targetLanguage = targetLanguage;
     }
 
     /**
-     * @return the segments
+     * Método get do campo segments.
+     * @return Retorna o valor do campo segments
      */
     public ArrayList<Segment> getSegments() {
         return segments;
     }
 
     /**
-     * @param segments the segments to set
+     * Método set do campo segments
+     * @param segments Novo valor para o campo segments
      */
     public void setSegments(ArrayList<Segment> segments) {
         this.segments = segments;
@@ -129,8 +165,8 @@ public class Document {
      */
     public String documentToCSV() {
         String str = "";
-        String aux = subject + "," + task + "," + st + "," + stLanguage + "," + ttLanguage + ",";
-
+        String aux = subject + "," + task + "," + sourceText + "," + sourceLanguage + "," + targetLanguage + ",";
+        
         for (Segment s : segments) {
             str = str + aux + s.segmentToCSV();
         }

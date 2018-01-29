@@ -27,7 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Classe responsável por persistir os arquivos no formato CSV.
  * @author gabriel
  */
 public class SaveToCSV {
@@ -72,10 +72,8 @@ public class SaveToCSV {
      */
     public static boolean singleFileToCSV(ArrayList<Document> docList, String filePath) {
         String text = HEADER;
-
-        for (Document doc : docList) {
-            text += doc.documentToCSV();
-        }
+        
+        text = docList.stream().map((doc) -> doc.documentToCSV()).reduce(text, String::concat);
 
         if (!save(text, filePath)) {
             //TODO: Adicionar erro ao log

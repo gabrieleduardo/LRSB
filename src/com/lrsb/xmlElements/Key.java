@@ -20,95 +20,95 @@
 package com.lrsb.xmlElements;
 
 /**
- *
+ * Classe responsável por armazenar as ações de tecla do documento processado.
  * @author gabriel
  */
 public class Key extends Action {
 
     /**
-     * Tipo de ação de tecla
+     * Tipo de ação de tecla.
      */
     private String type;
 
     /**
-     * Largura
+     * Largura.
      */
-    private Integer Width;
+    private Integer width;
 
     /**
-     * Altura
+     * Altura.
      */
-    private Integer Height;
+    private Integer height;
 
     /**
      * Construtor da clase Key. Herda da classe Action.
      *
-     * @param time - Tempo
-     * @param cursor - Cursor
-     * @param value - Valor
-     * @param action - Ação
-     * @param type - Tipo
-     * @param Width - Largura
-     * @param Height - Altura
+     * @param time Tempo que ocorreu a ação de tecla.
+     * @param cursor Cursor.
+     * @param value Valor da tecla acionada.
+     * @param action Tipo de ação (Mouse ou Key).
+     * @param type Tipo de ação realizada (Insert ou Delete).
+     * @param width Largura.
+     * @param height Altura.
      */
-    public Key(Integer time, Integer cursor, String value, String action, String type, Integer Width, Integer Height) {
+    public Key(Integer time, Integer cursor, String value, String action, String type, Integer width, Integer height) {
         super(time, cursor, value, action);
         this.type = type;
-        this.Width = Width;
-        this.Height = Height;
+        this.width = width;
+        this.height = height;
     }
 
     /**
-     * Método get da variável Type
+     * Método get da variável Type.
      *
-     * @return the type
+     * @return Retorna o valor do campo type.
      */
     public String getType() {
         return type;
     }
 
     /**
-     * Método set da variável type
+     * Método set da variável type.
      *
-     * @param type the type to set
+     * @param type Novo valor do campo type.
      */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
-     * Método get da variável Width
+     * Método get da variável width.
      *
-     * @return the Width
+     * @return Retorna o valor do campo width.
      */
     public Integer getWidth() {
-        return Width;
+        return width;
     }
 
     /**
-     * Método set da variável Width
+     * Método set da variável width.
      *
-     * @param Width the Width to set
+     * @param width Novo valor do campo width.
      */
-    public void setWidth(Integer Width) {
-        this.Width = Width;
+    public void setWidth(Integer width) {
+        this.width = width;
     }
 
     /**
-     * Método get da variável Height
+     * Método get da variável height.
      *
-     * @return the Height
+     * @return Retorna o valor do campo height.
      */
     public Integer getHeight() {
-        return Height;
+        return height;
     }
 
     /**
-     * Método set da variável Height
+     * Método set da variável height.
      *
-     * @param Height the Height to set
+     * @param height Novo valor do campo height.
      */
-    public void setHeight(Integer Height) {
-        this.Height = Height;
+    public void setHeight(Integer height) {
+        this.height = height;
     }
 }
