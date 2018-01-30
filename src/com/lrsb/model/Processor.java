@@ -19,6 +19,7 @@
  */
 package com.lrsb.model;
 
+import com.lrsb.log.LogControl;
 import static com.lrsb.model.StringTreatment.format2f;
 import com.lrsb.spreadsheet.SaveToCSV;
 import com.lrsb.xmlElements.Action;
@@ -66,8 +67,12 @@ public class Processor {
         ArrayList<Document> documentList = new ArrayList<>();
         File directory = new File(sourcePath);
         String[] directoryFilenames = directory.list();
+        
+        LogControl.log("Iniciando o processamento dos arquivos do diretório ["+sourcePath+"].");
 
         if (directoryFilenames == null) {
+            LogControl.log("O diretório ["+sourcePath+"] não possui arquivos.");
+            
             return;
         }
 
@@ -81,6 +86,9 @@ public class Processor {
          * Nota: Caso o valor máximo não seja informado, será considerado o
          * valor máximo do tipo de dados inteiro.
          */
+        
+        LogControl.log("Valores de pausa informados: ["+inputedPauseBegin+"] - ["+inputedPauseEnd+"].");
+        
         Integer pauseBegin = validatePauseValue(inputedPauseBegin, 2400);
         Integer pauseEnd = validatePauseValue(inputedPauseEnd, Integer.MAX_VALUE);
 
@@ -93,10 +101,12 @@ public class Processor {
                     /**
                      * Realiza o parse do documento XML
                      */
-                    System.out.println("Processando arquivo: " + filename);
+                    LogControl.log("Processando arquivo: ["+ filename+"].");
+                    
                     XmlDocument xmlDocument = XmlReader.parseDocument(sourcePath + File.separator + filename);
                     Document document = Processor.processDocument(xmlDocument, pauseBegin, pauseEnd);
-                    System.out.println("Arquivo " + filename + " processado.");
+                    
+                    LogControl.log("Processamento do arquivo ["+filename+"] finalizado.");
 
                     /**
                      * Caso o usuário deseje salvar os arquivos em planilhas
@@ -108,7 +118,14 @@ public class Processor {
                     if (!processSingleFile) {
                         Date date = new Date();
                         String savePath = targetPath + File.separator + removeXml(filename) + "+" + date.getTime() + ".csv";
-                        SaveToCSV.simpleFileToCSV(document, savePath);
+                        LogControl.log("Iniciando persistência do arquivo CSV: ["+savePath+"].");
+                        
+                        if(SaveToCSV.simpleFileToCSV(document, savePath)){
+                            LogControl.log("Persistência do arquivo ["+savePath+"] finalizada.");
+                        }else{
+                            LogControl.log("Erro ao persistir o arquivo ["+savePath+"] .");
+                        };
+                        
                     } else {
                         documentList.add(document);
                     }
@@ -126,10 +143,16 @@ public class Processor {
         if (processSingleFile) {
             Date date = new Date();
             String savePath = targetPath + File.separator + "all+" + date.getTime() + ".csv";
-            SaveToCSV.singleFileToCSV(documentList, savePath);
+            
+            if(SaveToCSV.singleFileToCSV(documentList, savePath)){
+                LogControl.log("Persistência do arquivo ["+savePath+"] finalizada.");
+            }else{
+                LogControl.log("Erro ao persistir o arquivo ["+savePath+"].");
+            }
         }
+        
+        LogControl.log("Finalizado o processamento dos arquivos do diretório ["+sourcePath+"].");
 
-        System.out.println("Todos arquivos processados");
     }
 
     /**

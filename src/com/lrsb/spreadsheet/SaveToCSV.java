@@ -19,6 +19,7 @@
  */
 package com.lrsb.spreadsheet;
 
+import com.lrsb.log.LogControl;
 import com.lrsb.model.Document;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -52,14 +53,13 @@ public class SaveToCSV {
      *
      * @param doc Documento a ser salvo em CSV.
      * @param filePath Caminho do diretório para salvar o arquivo.
+     * @return True em caso de sucesso, False em caso de falha.
      */
-    public static void simpleFileToCSV(Document doc, String filePath){
+    public static boolean simpleFileToCSV(Document doc, String filePath){
         
        String text = HEADER + doc.documentToCSV();
-
-        if (!save(text, filePath)) {
-            //TODO: Adicionar erro ao log
-        }
+       
+       return save(text, filePath);
     }
 
     /**
@@ -75,12 +75,7 @@ public class SaveToCSV {
         
         text = docList.stream().map((doc) -> doc.documentToCSV()).reduce(text, String::concat);
 
-        if (!save(text, filePath)) {
-            //TODO: Adicionar erro ao log
-            return false;
-        }
-
-        return true;
+        return save(text, filePath);
     }
 
     /**
@@ -98,9 +93,8 @@ public class SaveToCSV {
             return true;
         } catch (IOException ex) {
             Logger.getLogger(SaveToCSV.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            //TODO: Adicionar erro ao log
-            return false;
         }
+        
+        return false;
     }
 }

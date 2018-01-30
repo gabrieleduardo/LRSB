@@ -19,6 +19,7 @@
  */
 package com.lrsb.xmlElements;
 
+import com.lrsb.log.LogControl;
 import com.lrsb.model.StringTreatment;
 import java.io.BufferedReader;
 import java.io.File;
@@ -106,6 +107,9 @@ public class XmlReader {
     public static XmlDocument parseDocument(String filename) throws FileNotFoundException, IOException, Exception {
         try {
             XmlDocument xmlDocument = new XmlDocument();
+            
+            LogControl.log("Iniciando abertura do arquivo: ["+filename+"].");
+            
             File file = new File(filename);
                
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODE));
@@ -124,7 +128,9 @@ public class XmlReader {
              * sequêncial garante um desempenho superior a busca dos nodes no
              * xpath.
              */
-                        
+                  
+            LogControl.log("Iniciando leitura do arquivo: ["+filename+"].");
+            
             while (bufferedReader.ready()) {
                 textLine = bufferedReader.readLine();
 
@@ -156,8 +162,6 @@ public class XmlReader {
 
                 } else if (textLine.contains("<Languages")) {
                     
-                    System.out.println("Texto recebido: "+textLine);
-
                     textLine = StringTreatment.replaceLanguage(textLine);
                     String[] translationLanguages = parseElement(textLine);
                     xmlDocument.setSourceLanguage(translationLanguages[0]);
@@ -174,6 +178,8 @@ public class XmlReader {
                     }
                 }
             }
+            
+            LogControl.log("Leitura do arquivo ["+filename+"] finalizada");
 
             return xmlDocument;
 
