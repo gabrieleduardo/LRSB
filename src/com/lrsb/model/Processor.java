@@ -34,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -149,274 +148,375 @@ public class Processor {
         document.setSubject(xmlDocument.getSubject());
         document.setTask(xmlDocument.getTask());
         document.setTargetLanguage(xmlDocument.getTargetLanguage());
-        getMicroUnits(xmlDocument, document, pauseA, pauseB);
-        return document;
+        return getMicroUnits(xmlDocument, document, pauseA, pauseB);
     }
 
-    private static void getMicroUnits(XmlDocument xmlDocument, Document document, Integer pauseBegin, Integer pauseEnd) {
+    /**
+     * Recupera as informações de microunidades.
+     * @param xmlDocument Objeto com as informações processadas do source XML.
+     * @param document Documento que irá armazenar as informações processadas.
+     * @param pauseBegin Valor do início do intervalo de pausas.
+     * @param pauseEnd Valor do término do intervalo de pausas;
+     */
+    private static Document getMicroUnits(XmlDocument xmlDocument, Document document, Integer pauseBegin, Integer pauseEnd) {
         // Polimorfismo para conseguir todos os Eventos em ordem
         ArrayList<XmlEvent> eventList = new ArrayList<>();
         eventList.addAll(xmlDocument.getFixationList());
         eventList.addAll(xmlDocument.getActionList());
         sortEventList(eventList);
-        // Variaveis
-        Integer difference = Integer.MIN_VALUE;
-        Integer microUnitId = 1;
-        Integer finalTime = eventList.get(0).getTime();
-        Integer initialTime = finalTime;
-        Integer fixCountS = 0;
-        Integer fixCountT = 0;
-        Integer ins = 0;
-        Integer del = 0;
-        Integer fixDurationS = 0;
-        Integer fixDurationT = 0;
-        String linearRepresentation = "";
-        Segment segment = new Segment();
-        Integer previousPause = 0;
-        Integer visits = 0;
-        Integer previousWindow = 0;
-        Integer previousX = null;
-        Integer previousY = null;
-        Double distance;
-        String saccade = "";
-        Double saccadeSum = 0.0;
-        Integer saccadeAc = 0;
-        Integer previousActionTime = Integer.MAX_VALUE;
-        Integer currentActionTime = 0;
-        Integer fixDurationSPause = 0;
-        Integer fixCountSPause = 0;
-        Integer fixDurationTPause = 0;
-        Integer fixCountTPause = 0;
-        String saccadeAngle = "";
-        String saccadePause = "";
-        String saccadeAnglePause = "";
-        Double saccadeSumPause = 0.0;
-        Integer visitsPause = 0;
-        Integer saccadeAcPause = 0;
+        
+        /**
+         * Como o primeiro evento não possui evento anterior, os dados de controle
+         * são iniciados com o tempo final e inicial iguais ao tempo final do 
+         * primeiro evento.
+         */
+        ControlData controlData = new ControlData(eventList.get(0).getTime());      
+
 
         for (int i = 0; i < eventList.size() - 1; i++) {
-            segment.setMicroUnitId(microUnitId);
-            segment.setStart(initialTime);
+            controlData.segment.setMicroUnitId(controlData.microUnitId);
+            controlData.segment.setStart(controlData.initialTime);
             XmlEvent xmlEvent = eventList.get(i);
-            difference = Integer.MIN_VALUE;
-
-            if (xmlEvent.getClass() == Key.class) {
-                currentActionTime = xmlEvent.getTime();
-                difference = currentActionTime - previousActionTime;
-                previousActionTime = currentActionTime;
-                currentActionTime = 0;
-            }
+            controlData.difference = Integer.MIN_VALUE;
 
             /**
              * Verifica o tipo de evento e atualiza as variaveis correspondentes
              */
+            
             if (xmlEvent.getClass() == Key.class) {
-                Key key = (Key) xmlEvent;
-                if ("delete".equalsIgnoreCase(key.getType())) {
-                    del++;
-                } else if ("insert".equalsIgnoreCase(key.getType())) {
-                    ins++;
-                }
-
-                linearRepresentation = linearRepresentation + key.getValue();
+                controlData = processKeyEvent(controlData, xmlEvent);
             } else if (xmlEvent.getClass() == Fix.class) {
-                Fix fix = (Fix) xmlEvent;
-                if (fix.getWin() == 1) {
-                    fixCountS++;
-                    fixCountSPause++;
-                } else if (fix.getWin() == 2) {
-                    fixCountT++;
-                    fixCountTPause++;
-                }
-                // Nota: Não considera visitas inválidas.              
-                if ((fix.getWin() != previousWindow) && (fix.getWin() == 1 || fix.getWin() == 2)) {
-                    visits++;
-                    visitsPause++;
-                    previousWindow = fix.getWin();
-                }
+                controlData = processFixEvent(controlData, xmlEvent);
             } else if (xmlEvent.getClass() == TextFix.class) {
-                TextFix textFix = (TextFix) xmlEvent;
-
-                if (textFix.getWin() == 1) {
-                    fixDurationS += textFix.getDur();
-                    fixCountS++;
-                    fixDurationSPause += textFix.getDur();
-                    fixCountSPause++;
-                } else if (textFix.getWin() == 2) {
-                    fixDurationT += textFix.getDur();
-                    fixCountT++;
-                    fixDurationTPause += textFix.getDur();
-                    fixCountTPause++;
-                }
-
-                //Verifica se houve uma saccade na microunidade
-                if (isSaccade(previousX, previousY, textFix)) {
-                    distance = distanceCalculate(previousX, textFix.getX(), previousY, textFix.getY());
-                    saccadeSum += distance;
-                    saccadeSumPause += distance;
-                    saccadeAc++;
-                    saccadeAcPause++;
-
-                    saccade += (saccade.isEmpty() ? "" : "+") + format2f(distance);
-                    saccadePause += (saccadePause.isEmpty() ? "" : "+") + format2f(distance);
-                    saccadeAngle += (saccadeAngle.isEmpty() ? "" : "+") + format2f(getAngle(previousX, previousY, textFix.getX(), textFix.getY()));
-                    saccadeAnglePause += (saccadeAnglePause.isEmpty() ? "" : "+") + format2f(getAngle(previousX, previousY, textFix.getX(), textFix.getY()));
-                }
-
-                previousX = textFix.getX();
-                previousY = textFix.getY();
+                controlData = processTextFixEvent(controlData, xmlEvent);
             } else if (xmlEvent.getClass() == Action.class) {
-                Action action = (Action) xmlEvent;
-                linearRepresentation = linearRepresentation + action.toString();
+                controlData = processActionEvent(controlData, xmlEvent);
             }
 
             /**
              * Verifica se o valor está dentro do intervalo de pausas
              * pré-determinado.
              */
-            if (difference >= pauseBegin && difference <= pauseEnd) {
-                //Atualiza o tempo final
-                finalTime = eventList.get(i + 1).getTime() - 1;
-
-                // Adiciona os valores ao segmento
-                segment.setPause(previousPause);
-                segment.setEnd(finalTime);
-                segment.setDurationM(finalTime - initialTime);
-                segment.setLinearRepresentation(linearRepresentation);
-                segment.setFixCountS(fixCountS);
-                segment.setFixCountT(fixCountT);
-                segment.setFixDurationS(fixDurationS);
-                segment.setFixDurationT(fixDurationT);
-
-                segment.setMeanDurationT(fixCountT > 0 ? (fixDurationT.doubleValue() / fixCountT) : 0.0);
-                segment.setMeanDurationS(fixCountS > 0 ? (fixDurationT.doubleValue() / fixCountS) : 0.0);
-
-                segment.setFixCountST(fixCountT + fixCountS);
-                segment.setFixDurationST(fixDurationS + fixDurationT);
-
-                segment.setMeanDurationST(
-                    (fixCountT + fixCountS > 0) ? (segment.getFixDurationST().doubleValue() / (fixCountT + fixCountS)) : 0.0
-                );
-
-                segment.setFixCountSPause(fixCountSPause);
-                segment.setFixDurationSPause(fixDurationSPause);
-
-                segment.setMeanDurationSPause(
-                        fixCountSPause > 0 ? (double) fixDurationSPause / fixCountSPause : 0.0
-                );
-
-                segment.setFixCountTPause(fixCountTPause);
-                segment.setFixDurationTPause(fixDurationTPause);
+            if (controlData.difference >= pauseBegin && controlData.difference <= pauseEnd) {
+                controlData = createSegment(controlData, xmlEvent, eventList.get(i + 1).getTime());
                 
-                segment.setMeanDurationTPause(
-                  fixCountTPause > 0 ? (double) fixDurationTPause / fixCountTPause : 0.0      
-                );
-
-                segment.setFixDurationSTPause(fixDurationSPause + fixDurationTPause);
-                segment.setFixCountSTPause(fixCountSPause + fixCountTPause);
-                
-                segment.setMeanDurationSTPause(
-                    (fixDurationSPause + fixDurationTPause > 0) ? (double) segment.getFixDurationSTPause() / segment.getFixCountST(): 0.0
-                );
-
-                segment.setVisits(visits);
-                segment.setVisitsPause(visitsPause);
-                segment.setSaccade(saccade);
-                segment.setSacaddeAngle(saccadeAngle);
-
-                if (saccadeAc > 0) {
-                    segment.setSaccadeMean(saccadeSum / saccadeAc);
-                    segment.setSaccadeSum(saccadeSum);
-                } else {
-                    segment.setSaccadeMean(0.0);
-                    segment.setSaccadeSum(0.0);
-                }
-                
-                segment.setSaccadePause(saccadePause);
-                segment.setSaccadeAnglePause(saccadeAnglePause);
-                segment.setSaccadeSumPause(saccadeSumPause);
-
-                if (saccadeAcPause > 0) {
-                    segment.setSaccadeMeanPause(saccadeSumPause / saccadeAcPause);
-                    segment.setSaccadeSumPause(saccadeSumPause);
-                } else {
-                    segment.setSaccadeMeanPause(0.0);
-                }
-                segment.setIns(ins);
-                segment.setDel(del);
-
                 // Adiciona o segmento ao Documento
-                document.getSegments().add(segment);
+                document.getSegments().add(controlData.segment);
 
-                //Atualiza as Variaveis
-                previousPause = difference;
-                finalTime = eventList.get(i + 1).getTime();
-                initialTime = finalTime;
-                fixCountS = 0;
-                fixCountT = 0;
-                ins = 0;
-                del = 0;
-                fixDurationS = 0;
-                fixDurationT = 0;
-                linearRepresentation = "";
-                microUnitId++;
-                segment = new Segment();
-                visits = 0;
-                saccade = "";
-                saccadeAngle = "";
-                saccadeSum = 0.0;
-                fixCountSPause = 0;
-                fixCountTPause = 0;
-                fixDurationSPause = 0;
-                fixDurationTPause = 0;
-                saccadePause = "";
-                saccadeAnglePause = "";
-                saccadeSumPause = 0.0;
-                visitsPause = 0;
-                saccadeAcPause = 0;
+                //Atualiza as variaveis para o novo segmento
+                controlData = updateControlData(controlData, eventList.get(i + 1).getTime());
             }
-
-            //if (xmlEvent.getClass() == Action.class || xmlEvent.getClass() == Key.class) {
+                     
+            /**
+             * Atualiza as informações de pausa case seja um evento de tecla.
+             */
             if (xmlEvent.getClass() == Key.class) {
-                fixCountSPause = 0;
-                fixCountTPause = 0;
-                fixDurationSPause = 0;
-                fixDurationTPause = 0;
-                saccadePause = "";
-                saccadeAnglePause = "";
-                saccadeSumPause = 0.0;
-                visitsPause = 0;
-                saccadeAcPause = 0;
+                updatePauseControlData(controlData);
             }
         }
+        
+        return document;
+    }
+    
+    /**
+     * Processa os eventos de tecla.
+     * @param controlData Dados de controle do processamento.
+     * @param xmlEvent Evento capturado do xml.
+     */
+    private static ControlData processKeyEvent(ControlData controlData, XmlEvent xmlEvent){
+        controlData.currentActionTime = xmlEvent.getTime();
+        controlData.difference = controlData.currentActionTime - controlData.previousActionTime;
+        controlData.previousActionTime = controlData.currentActionTime;
+        controlData.currentActionTime = 0;
+
+        Key key = (Key) xmlEvent;
+        
+        if ("delete".equalsIgnoreCase(key.getType())) {
+            controlData.del++;
+        } else if ("insert".equalsIgnoreCase(key.getType())) {
+            controlData.ins++;
+        }
+
+        controlData.linearRepresentation = controlData.linearRepresentation + key.getValue();
+
+        return controlData;
+    }
+    
+    /**
+     * Processa os eventos de fixação.
+     * @param controlData Dados de controle do processamento.
+     * @param xmlEvent Evento capturado do xml.
+     */
+    private static ControlData processFixEvent(ControlData controlData, XmlEvent xmlEvent){
+        Fix fix = (Fix) xmlEvent;
+
+        if (fix.getWin() == 1) {
+            controlData.fixCountS++;
+            controlData.fixCountSPause++;
+        } else if (fix.getWin() == 2) {
+            controlData.fixCountT++;
+            controlData.fixCountTPause++;
+        }
+        
+        /**
+         * Identifica se houve visitação (troca de janelas).
+         * Nota: Não considera visitas inválidas.  
+         */
+ 
+        if ((fix.getWin() != controlData.previousWindow) && (fix.getWin() == 1 || fix.getWin() == 2)) {
+            controlData.visits++;
+            controlData.visitsPause++;
+            controlData.previousWindow = fix.getWin();
+        }
+        
+        return controlData;
+    }
+    
+    /**
+     * Processa os eventos de fixação em texto.
+     * @param controlData Dados de controle do processamento.
+     * @param xmlEvent Evento capturado do xml.
+     */
+    private static ControlData processTextFixEvent(ControlData controlData, XmlEvent xmlEvent){
+                
+        TextFix textFix = (TextFix) xmlEvent;
+
+        if (textFix.getWin() == 1) {
+            controlData.fixDurationS += textFix.getDur();
+            controlData.fixCountS++;
+            controlData.fixDurationSPause += textFix.getDur();
+            controlData.fixCountSPause++;
+        } else if (textFix.getWin() == 2) {
+            controlData.fixDurationT += textFix.getDur();
+            controlData.fixCountT++;
+            controlData.fixDurationTPause += textFix.getDur();
+            controlData.fixCountTPause++;
+        }
+
+        //Verifica se houve uma sacada.
+        if (isSaccade(controlData.previousX, controlData.previousY, textFix)) {
+            controlData = processSaccade(controlData, textFix);
+        }
+
+        controlData.previousX = textFix.getX();
+        controlData.previousY = textFix.getY();
+        
+        return controlData;
+    }
+    
+    /**
+     * Identifica se do evento anterior para o atual houve uma sacada.
+     * @param previousX Valor do eixo X do evento anterior.
+     * @param previousY Valor do eixo Y do evento anterior.
+     * @param textFix Evento de fixação de texto.
+     * @return True caso houve uma sacada, Falso caso contrário.
+     */
+    private static boolean isSaccade(Integer previousX, Integer previousY, TextFix textFix) {
+        return previousX != null && previousY != null && textFix.getX() != null && textFix.getY() != null;
+    }
+    
+    /**
+     * Processa uma sacada, atualizando os dados de controle.
+     * @param controlData Dados de Controle do processamento.
+     * @param textFix Evento de fixação de texto.
+     * @return Retorna os dados de controle atualizados.
+     */
+    private static ControlData processSaccade(ControlData controlData,TextFix textFix){
+        controlData.distance = distanceCalculate(controlData.previousX, textFix.getX(), controlData.previousY, textFix.getY());
+        controlData.saccadeSum += controlData.distance;
+        controlData.saccadeSumPause += controlData.distance;
+        controlData.saccadeAc++;
+        controlData.saccadeAcPause++;
+        
+        controlData.saccade += (controlData.saccade.isEmpty() ? "" : "+") + format2f(controlData.distance);
+        controlData.saccadePause += (controlData.saccadePause.isEmpty() ? "" : "+") + format2f(controlData.distance);
+        controlData.saccadeAngle += (controlData.saccadeAngle.isEmpty() ? "" : "+") + format2f(
+                getAngle(controlData.previousX, controlData.previousY, textFix.getX(), textFix.getY())
+        );
+        controlData.saccadeAnglePause += (controlData.saccadeAnglePause.isEmpty() ? "" : "+") + format2f(
+                getAngle(controlData.previousX, controlData.previousY, textFix.getX(), textFix.getY())
+        );
+
+        return controlData;
+    }
+        
+    /**
+     * Processa os eventos de ação.
+     * @param controlData Dados de controle do processamento.
+     * @param xmlEvent Evento capturado do xml.
+     * @return Retorna os dados de controle atualizados.
+     */
+    private static ControlData processActionEvent(ControlData controlData, XmlEvent xmlEvent){
+        Action action = (Action) xmlEvent;
+        controlData.linearRepresentation = controlData.linearRepresentation + action.toString();
+        
+        return controlData;
+    }
+    
+    /**
+     * Cria um novo segmento com as informações compreendidas entre as pausas.
+     * @param controlData Dados de controle do processamento.
+     * @param xmlEvent Evento capturado do xml.
+     * @param finalTime Tempo final do segmento.
+     * @return Retorna os dados de controle atualizados.
+     */
+    private static ControlData createSegment(ControlData controlData, XmlEvent xmlEvent,Integer finalTime){
+        //Atualiza o tempo final
+        //controlData.finalTime = eventList.get(i + 1).getTime() - 1;
+        controlData.finalTime = finalTime -1;
+
+        // Adiciona os valores ao segmento
+        controlData.segment.setPause(controlData.previousPause);
+        controlData.segment.setEnd(controlData.finalTime);
+        controlData.segment.setDurationM(controlData.finalTime - controlData.initialTime);
+        controlData.segment.setLinearRepresentation(controlData.linearRepresentation);
+        controlData.segment.setFixCountS(controlData.fixCountS);
+        controlData.segment.setFixCountT(controlData.fixCountT);
+        controlData.segment.setFixDurationS(controlData.fixDurationS);
+        controlData.segment.setFixDurationT(controlData.fixDurationT);
+
+        controlData.segment.setMeanDurationT(controlData.fixCountT > 0 ? (controlData.fixDurationT.doubleValue() / controlData.fixCountT) : 0.0);
+        controlData.segment.setMeanDurationS(controlData.fixCountS > 0 ? (controlData.fixDurationT.doubleValue() / controlData.fixCountS) : 0.0);
+
+        controlData.segment.setFixCountST(controlData.fixCountT + controlData.fixCountS);
+        controlData.segment.setFixDurationST(controlData.fixDurationS + controlData.fixDurationT);
+
+        controlData.segment.setMeanDurationST(
+            (controlData.fixCountT + controlData.fixCountS > 0) ? (controlData.segment.getFixDurationST().doubleValue() / (controlData.fixCountT + controlData.fixCountS)) : 0.0
+        );
+
+        controlData.segment.setFixCountSPause(controlData.fixCountSPause);
+        controlData.segment.setFixDurationSPause(controlData.fixDurationSPause);
+
+        controlData.segment.setMeanDurationSPause(
+                controlData.fixCountSPause > 0 ? (double) controlData.fixDurationSPause / controlData.fixCountSPause : 0.0
+        );
+
+        controlData.segment.setFixCountTPause(controlData.fixCountTPause);
+        controlData.segment.setFixDurationTPause(controlData.fixDurationTPause);
+
+        controlData.segment.setMeanDurationTPause(
+          controlData.fixCountTPause > 0 ? (double) controlData.fixDurationTPause / controlData.fixCountTPause : 0.0      
+        );
+
+        controlData.segment.setFixDurationSTPause(controlData.fixDurationSPause + controlData.fixDurationTPause);
+        controlData.segment.setFixCountSTPause(controlData.fixCountSPause + controlData.fixCountTPause);
+
+        controlData.segment.setMeanDurationSTPause(
+            (controlData.fixDurationSPause + controlData.fixDurationTPause > 0) ? (double) controlData.segment.getFixDurationSTPause() / controlData.segment.getFixCountST(): 0.0
+        );
+
+        controlData.segment.setVisits(controlData.visits);
+        controlData.segment.setVisitsPause(controlData.visitsPause);
+        controlData.segment.setSaccade(controlData.saccade);
+        controlData.segment.setSacaddeAngle(controlData.saccadeAngle);
+
+        if (controlData.saccadeAc > 0) {
+            controlData.segment.setSaccadeMean(controlData.saccadeSum / controlData.saccadeAc);
+            controlData.segment.setSaccadeSum(controlData.saccadeSum);
+        } else {
+            controlData.segment.setSaccadeMean(0.0);
+            controlData.segment.setSaccadeSum(0.0);
+        }
+
+        controlData.segment.setSaccadePause(controlData.saccadePause);
+        controlData.segment.setSaccadeAnglePause(controlData.saccadeAnglePause);
+        controlData.segment.setSaccadeSumPause(controlData.saccadeSumPause);
+
+        if (controlData.saccadeAcPause > 0) {
+            controlData.segment.setSaccadeMeanPause(controlData.saccadeSumPause / controlData.saccadeAcPause);
+            controlData.segment.setSaccadeSumPause(controlData.saccadeSumPause);
+        } else {
+            controlData.segment.setSaccadeMeanPause(0.0);
+        }
+        controlData.segment.setIns(controlData.ins);
+        controlData.segment.setDel(controlData.del);
+        
+        return controlData;
+    }
+    
+    /**
+     * Atualiza os dados de controle após a criação de um novo segmento.
+     * @param controlData Dados de controle do processamento.
+     * @param finalTime Tempo final do evento.
+     * @return Retorna os dados de controle atualizados. 
+     */
+    private static ControlData updateControlData(ControlData controlData,Integer finalTime){
+        controlData.previousPause = controlData.difference;
+        controlData.finalTime = finalTime;
+        controlData.initialTime = controlData.finalTime;
+        controlData.fixCountS = 0;
+        controlData.fixCountT = 0;
+        controlData.ins = 0;
+        controlData.del = 0;
+        controlData.fixDurationS = 0;
+        controlData.fixDurationT = 0;
+        controlData.linearRepresentation = "";
+        controlData.microUnitId++;
+        controlData.segment = new Segment();
+        controlData.visits = 0;
+        controlData.saccade = "";
+        controlData.saccadeAngle = "";
+        controlData.saccadeSum = 0.0;
+        controlData.fixCountSPause = 0;
+        controlData.fixCountTPause = 0;
+        controlData.fixDurationSPause = 0;
+        controlData.fixDurationTPause = 0;
+        controlData.saccadePause = "";
+        controlData.saccadeAnglePause = "";
+        controlData.saccadeSumPause = 0.0;
+        controlData.visitsPause = 0;
+        controlData.saccadeAcPause = 0;
+        
+        return controlData;
+    }
+    
+    /**
+     * Atualiza as informações de pausa dos dados de controle.
+     * @param controlData Dados de controle do processamento.
+     * @return Retorna os dados de controle atualizados.
+     */
+    private static ControlData updatePauseControlData(ControlData controlData){
+        controlData.fixCountSPause = 0;
+        controlData.fixCountTPause = 0;
+        controlData.fixDurationSPause = 0;
+        controlData.fixDurationTPause = 0;
+        controlData.saccadePause = "";
+        controlData.saccadeAnglePause = "";
+        controlData.saccadeSumPause = 0.0;
+        controlData.visitsPause = 0;
+        controlData.saccadeAcPause = 0;
+        
+        return controlData;
     }
 
     /**
      * Ordena os eventos por ordem cronológica
      *
-     * @param eList Lista de Eventos
+     * @param eventList Array com uma lista de eventos XML.
      */
-    private static void sortEventList(ArrayList<XmlEvent> eList) {
-        Collections.sort(eList, new Comparator<XmlEvent>() {
-            @Override
-            public int compare(XmlEvent e1, XmlEvent e2) {
-                return e1.getTime().compareTo(e2.getTime());
-            }
-        });
+    private static void sortEventList(ArrayList<XmlEvent> eventList) {
+        Collections.sort(eventList, (XmlEvent e1, XmlEvent e2) -> e1.getTime().compareTo(e2.getTime()));
     }
 
+    
     /**
-     * Calcula a distância
+     * Cálcula a distância euclidiana entre dois pontos.
+     * @param x1 Eixo X do primeiro ponto.
+     * @param y1 Eixo Y do primeiro ponto.
+     * @param x2 Eixo X do segundo ponto.
+     * @param y2 Eixo Y do segundo ponto.
+     * @return Distância euclidiana entre os dois pontos.
      */
     private static Double distanceCalculate(Integer x1, Integer y1, Integer x2, Integer y2) {
         return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
 
     /**
-     * Remove a extensão XML de uma String
+     * Remove a extensão XML de uma String.
      *
-     * @param nome Nome do Arquivo fonte
-     * @return Nome sem extensão xml
+     * @param nome Nome do Arquivo fonte.
+     * @return Nome sem extensão xml.
      */
     public static String removeXml(String nome) {
         return nome.replaceAll(".xml", "");
@@ -441,10 +541,6 @@ public class Processor {
             // Se ocorrer um erro na validação do input, então é retornado o default estipulado.
             return defaultPauseValue;
         }
-    }
-
-    private static boolean isSaccade(Integer previousX, Integer previousY, TextFix textFix) {
-        return previousX != null && previousY != null && textFix.getX() != null && textFix.getY() != null;
     }
     
     /**
@@ -478,4 +574,80 @@ public class Processor {
                 )
             ) * (180 / Math.PI);
     };
+}
+
+/**
+ * Subclasse utilizada para estruturar as informações de controle do processamento.
+ * @author gabze
+ */
+class ControlData {
+        public Integer difference;
+        public Integer microUnitId;
+        public Integer finalTime;
+        public Integer initialTime;
+        public Integer fixCountS;
+        public Integer fixCountT;
+        public Integer ins;
+        public Integer del;
+        public Integer fixDurationS;
+        public Integer fixDurationT;
+        public String linearRepresentation;
+        public Segment segment;
+        public Integer previousPause;
+        public Integer visits;
+        public Integer previousWindow;
+        public Integer previousX;
+        public Integer previousY;
+        public Double distance;
+        public String saccade;
+        public Double saccadeSum;
+        public Integer saccadeAc;
+        public Integer previousActionTime;
+        public Integer currentActionTime;
+        public Integer fixDurationSPause;
+        public Integer fixCountSPause;
+        public Integer fixDurationTPause;
+        public Integer fixCountTPause;
+        public String saccadeAngle;
+        public String saccadePause;
+        public String saccadeAnglePause;
+        public Double saccadeSumPause;
+        public Integer visitsPause;
+        public Integer saccadeAcPause;
+        
+        public ControlData(Integer finalTime){
+            this.difference = Integer.MIN_VALUE;
+            this.microUnitId = 1;
+            this.finalTime = finalTime;
+            this.initialTime = this.finalTime;
+            this.fixCountS = 0;
+            this.fixCountT = 0;
+            this.ins = 0;
+            this.del = 0;
+            this.fixDurationS = 0;
+            this.fixDurationT = 0;
+            this.linearRepresentation = "";
+            this.segment = new Segment();
+            this.previousPause = 0;
+            this.visits = 0;
+            this.previousWindow = 0;
+            this.previousX = null;
+            this.previousY = null;
+            this.distance = 0.0;
+            this.saccade = "";
+            this.saccadeSum = 0.0;
+            this.saccadeAc = 0;
+            this.previousActionTime = Integer.MAX_VALUE;
+            this.currentActionTime = 0;
+            this.fixDurationSPause = 0;
+            this.fixCountSPause = 0;
+            this.fixDurationTPause = 0;
+            this.fixCountTPause = 0;
+            this.saccadeAngle = "";
+            this.saccadePause = "";
+            this.saccadeAnglePause = "";
+            this.saccadeSumPause = 0.0;
+            this.visitsPause = 0;
+            this.saccadeAcPause = 0;    
+        }       
 }
